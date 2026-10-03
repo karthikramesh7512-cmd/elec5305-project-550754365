@@ -28,17 +28,4 @@ The excluded IDE launcher was redirected to `src/audit_dataset.py`.
 file and the relocated implementation files. Saved SVM models are included because
 the existing provenance tests check their training-only fits and predictions.
 
-## Excluded local files
 
-- `NDT_ML_Flaw-master/`: original dataset tree, metadata originals, upstream
-  README/license, and IDE launcher; derived metadata CSVs are included separately.
-- `NDT_ML_Flaw-master.zip`, `*.xz`, `*.lzma`: raw dataset archives/streams.
-- `.python_deps/`, `.venv/`, `venv/`: installed packages/environments.
-- `.vscode/`, `**/__pycache__/`, `*.pyc`, `.ipynb_checkpoints/`, `.DS_Store`:
-  local editor/cache/system files.
-- `Report1_KarthikRamesh.mlx`: unclassified earlier MATLAB Lab Report 1.
-- `elec5305-github.zip`: delivery archive, not repository source.
-
-Excluded originals remain on disk. The proposal directory contains a status note,
-not a fabricated proposal. No other supplied implementation or result artifacts
-remain unclassified. No Git commit, remote, or push was created.
