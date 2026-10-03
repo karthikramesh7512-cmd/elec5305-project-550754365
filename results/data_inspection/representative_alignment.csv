@@ -1,0 +1,7 @@
+sample_id,category,reference_sample_id,metadata_location,metadata_depth,difference_scan_start,difference_scan_end,difference_time_start,difference_time_end,origin_matches_metadata
+batch_013:1,P41_01,batch_013:4,210.526275,1681.461469,210,247,1681,2118,True
+batch_013:23,P41_02,batch_013:4,263.8407,1688.16611,263,291,1688,2092,True
+batch_013:17,P41_03,batch_013:4,40.337964,1515.968019,40,97,1515,2085,True
+batch_013:5,P41_04,batch_013:4,339.543174,1627.123555,339,374,1627,2143,True
+batch_013:51,P41_05,batch_013:4,322.452661,1501.487343,322,382,1501,2063,True
+batch_013:2,P41_06_notch,batch_013:4,226.585174,1624.037398,226,262,1624,1896,True

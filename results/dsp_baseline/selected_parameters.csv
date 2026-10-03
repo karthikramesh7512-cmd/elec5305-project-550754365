@@ -1,0 +1,8 @@
+scheme,fold,window,threshold,validation_balanced_accuracy,objective
+ordinary,0,1,4584.638763890536,1.0,551088
+source_holdout,1,1,6325.291403242178,1.0,643998
+source_holdout,2,1,14978.067377548334,1.0,736506
+source_holdout,3,1,13938.366294079275,1.0,661788
+source_holdout,4,1,10232.792205348078,1.0,680764
+source_holdout,5,1,7392.840321655627,1.0,710414
+source_holdout,6,1,4583.179836810362,1.0,648742

@@ -1,0 +1,8 @@
+scheme,fold,candidate,kernel,C,gamma,validation_balanced_accuracy
+ordinary,0,0,linear,0.01,scale,1.0
+source_holdout,1,0,linear,0.01,scale,1.0
+source_holdout,2,0,linear,0.01,scale,1.0
+source_holdout,3,0,linear,0.01,scale,1.0
+source_holdout,4,0,linear,0.01,scale,1.0
+source_holdout,5,0,linear,0.01,scale,1.0
+source_holdout,6,9,rbf,0.1,1,1.0

@@ -1,0 +1,27 @@
+{
+  "split_sha256": {
+    "data\\splits\\ordinary_split.csv": "5456690f5d37abade32b41daa9c6603b620f8df3b420c9fa8a692cc08069aef2",
+    "data\\splits\\source_holdout_folds.csv": "cf413709aafd512f06b5ca9fa0d073d2f16d3ce47841dd92795aaee27aa8d15c"
+  },
+  "split_files_unchanged": true,
+  "validation_only_tuning": true,
+  "all_test_samples_predicted_once": true,
+  "detector_input": "image array only; no depth/location metadata loaded",
+  "preprocessing": "per-image per-A-scan DC mean; no learned/global statistics",
+  "roi": [
+    1100,
+    3100
+  ],
+  "windows": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "spatial_boundary": "valid: full windows only",
+  "threshold_rule": "score >= threshold",
+  "tie_policy": "highest threshold, then smallest W",
+  "python": "3.11.9",
+  "numpy": "2.2.6",
+  "scipy": "1.17.1"
+}

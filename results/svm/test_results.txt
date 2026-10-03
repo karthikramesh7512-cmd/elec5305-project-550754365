@@ -1,0 +1,14 @@
+test_analytic_envelope_dc_and_fixed_roi (test_dsp_baseline.DSPTests.test_analytic_envelope_dc_and_fixed_roi) ... ok
+test_full_window_spatial_mean (test_dsp_baseline.DSPTests.test_full_window_spatial_mean) ... ok
+test_test_labels_scores_and_metadata_cannot_change_tuning (test_dsp_baseline.DSPTests.test_test_labels_scores_and_metadata_cannot_change_tuning) ... ok
+test_threshold_search_against_brute_force (test_dsp_baseline.DSPTests.test_threshold_search_against_brute_force) ... ok
+test_ties_and_metrics (test_dsp_baseline.DSPTests.test_ties_and_metrics) ... ok
+test_fit_calls_receive_training_only (test_svm_baseline.Tests.test_fit_calls_receive_training_only) ... ok
+test_fixed_roi_dc_and_energy (test_svm_baseline.Tests.test_fixed_roi_dc_and_energy) ... ok
+test_reject_test_rows_at_fit_or_selection (test_svm_baseline.Tests.test_reject_test_rows_at_fit_or_selection) ... ok
+test_saved_models_and_artifacts (test_svm_baseline.Tests.test_saved_models_and_artifacts) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.761s
+
+OK

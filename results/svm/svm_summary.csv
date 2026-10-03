@@ -1,0 +1,8 @@
+scheme,fold,candidate,kernel,C,gamma,validation_balanced_accuracy,test_source,flaw_size,n_test,TP,TN,FP,FN,accuracy,recall,sensitivity,specificity,precision,F1,false_positive_rate,balanced_accuracy,ROC_AUC,PR_AUC,average_precision
+ordinary,0,0,linear,0.01,scale,1.0,mixed,2.0;3.0;6.0;17.0;26.0,1050,517,533,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0
+source_holdout,1,0,linear,0.01,scale,1.0,P41_01,2.0,1140,540,593,0,7,0.993859649122807,0.9872029250457038,0.9872029250457038,1.0,1.0,0.9935602575896965,0.0,0.993601462522852,1.0,1.0,1.0
+source_holdout,2,0,linear,0.01,scale,1.0,P41_02,3.0,1136,543,593,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0
+source_holdout,3,0,linear,0.01,scale,1.0,P41_03,26.0,1214,621,593,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0
+source_holdout,4,0,linear,0.01,scale,1.0,P41_04,6.0,1151,558,593,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0
+source_holdout,5,0,linear,0.01,scale,1.0,P41_05,17.0,1167,574,593,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0
+source_holdout,6,9,rbf,0.1,1,1.0,P41_06_notch,6.0,1192,599,593,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0

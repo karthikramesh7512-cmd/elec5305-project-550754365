@@ -1,0 +1,9 @@
+{
+  "fit_partition": "ordinary train",
+  "n_fit": 4900,
+  "explained_variance_ratio": [
+    0.8649826043555345,
+    0.10705753824048365
+  ],
+  "classifier_uses_pca": false
+}

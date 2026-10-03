@@ -1,0 +1,2 @@
+# Preserve bytes used by the saved SHA-256 provenance checks across platforms.
+* -text

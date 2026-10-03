@@ -1,0 +1,8 @@
+scheme,fold,linear,rbf
+ordinary,0,1.0,1.0
+source_holdout,1,1.0,1.0
+source_holdout,2,1.0,1.0
+source_holdout,3,1.0,1.0
+source_holdout,4,1.0,1.0
+source_holdout,5,1.0,1.0
+source_holdout,6,0.9945155393053016,1.0

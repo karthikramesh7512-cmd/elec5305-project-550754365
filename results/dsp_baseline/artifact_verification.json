@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "evaluations": 7,
+  "prediction_rows": 49000,
+  "test_prediction_rows": 8050,
+  "tuning_ids_match_validation": true,
+  "test_tuning_overlap": false,
+  "split_hashes_unchanged": true,
+  "saved_metrics_match_predictions": true
+}

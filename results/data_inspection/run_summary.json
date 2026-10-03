@@ -1,0 +1,14 @@
+{
+  "selected_images": 77,
+  "images_per_batch": 1000,
+  "image_shape": [
+    480,
+    7168
+  ],
+  "dtype": "<i2",
+  "common_plot_limit": 3616.0,
+  "mean_std_ratio": 1.0004117398780061,
+  "mean_crop_std_ratio": 1.0022788172152926,
+  "sampled_min": -14935,
+  "sampled_max": 14144
+}

@@ -1,0 +1,20 @@
+{
+  "all_preserved": true,
+  "svm_frozen_artifact_sha256": {
+    "results\\svm\\svm_summary.csv": "48b2d9c86f7f87181d4232ead9ea32ac99876f2a5393ea75de2485a2da3426cc",
+    "results\\svm\\per_sample_results.csv": "eb15c0ec90e78419e95bce0c06201665b94bcbb9712177d10f5a457eb3299963",
+    "results\\svm\\selected_parameters.csv": "9a56ff00ab0d5419ef8053fb5171bed44d2e7057a188863089637582ec7e397d",
+    "data\\features_experimental.csv": "a99e2e6e9fa27b35bed08c261febb77d64eaca4bc2ed7dce37ff4c67ad99dfd2",
+    "results\\svm\\ordinary_0_pipeline.joblib": "c81c8d6a186d1d856aa8800d0235dc4725b4989b94db6587bf8610e8e5c5d2f3",
+    "results\\svm\\source_holdout_1_pipeline.joblib": "1ce2a7b30cffca3292acca117b2a07d62a15977a2afee9f711b5fa2aff107b61",
+    "results\\svm\\source_holdout_2_pipeline.joblib": "e0713f455cd36d31a4454dd54771b47587917346365e92461a6976750c4c2e69",
+    "results\\svm\\source_holdout_3_pipeline.joblib": "1773fd55d29e1d9dd3e1e915f24fd1fddb6c1467c4410c591cd2492bf8046024",
+    "results\\svm\\source_holdout_4_pipeline.joblib": "25be1cf4cd4e974c4951eae3def86f997b468d04e1fe4a748d257ff59e62620c",
+    "results\\svm\\source_holdout_5_pipeline.joblib": "7f85f28db9b2dfa4732735742d0958bddd5a4ae68069519311130deab9039f1c",
+    "results\\svm\\source_holdout_6_pipeline.joblib": "9c3df0dad376e860b4c84be65cc6634f5524b86d9b72a8037c377ced2eca0033"
+  },
+  "p41_01_TP": 540,
+  "p41_01_FN": 7,
+  "recall": 0.9872029250457038,
+  "no_extraction_or_fitting": true
+}

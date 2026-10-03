@@ -1,0 +1,13 @@
+scheme,fold,source_flaw,flaw_size,n_flaw,svm_recall,dsp_recall,recall_difference
+ordinary,0,P41_01,2.0,81,1.0,1.0,0.0
+ordinary,0,P41_02,3.0,86,1.0,1.0,0.0
+ordinary,0,P41_03,26.0,97,1.0,1.0,0.0
+ordinary,0,P41_04,6.0,76,1.0,1.0,0.0
+ordinary,0,P41_05,17.0,91,1.0,1.0,0.0
+ordinary,0,P41_06_notch,6.0,86,1.0,1.0,0.0
+source_holdout,1,P41_01,2.0,547,0.9872029250457038,0.0,0.9872029250457038
+source_holdout,2,P41_02,3.0,543,1.0,0.0,1.0
+source_holdout,3,P41_03,26.0,621,1.0,1.0,0.0
+source_holdout,4,P41_04,6.0,558,1.0,1.0,0.0
+source_holdout,5,P41_05,17.0,574,1.0,1.0,0.0
+source_holdout,6,P41_06_notch,6.0,599,1.0,1.0,0.0

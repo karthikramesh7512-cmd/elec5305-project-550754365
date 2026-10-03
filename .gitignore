@@ -1,0 +1,14 @@
+NDT_ML_Flaw-master/
+NDT_ML_Flaw-master.zip
+*.xz
+*.lzma
+.venv/
+venv/
+**/__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.python_deps/
+.vscode/
+Report1_KarthikRamesh.mlx
+elec5305-github.zip
