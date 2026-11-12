@@ -1,0 +1,48 @@
+{
+  "ordinary_sha256": "5456690f5d37abade32b41daa9c6603b620f8df3b420c9fa8a692cc08069aef2",
+  "features_sha256": "a99e2e6e9fa27b35bed08c261febb77d64eaca4bc2ed7dce37ff4c67ad99dfd2",
+  "code_sha256": "702dd3fb63e4627cae63f09f8f201f98355cf3dad6201785daa7c8bddf4568d7",
+  "config": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "max_epochs": 20,
+    "patience": 5,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "threshold": 0.5,
+    "roi": [
+      1100,
+      3100
+    ],
+    "input_shape": [
+      60,
+      125
+    ],
+    "pooling": [
+      8,
+      16
+    ],
+    "preprocessing": "per-A-scan DC removal; Hilbert magnitude; 8x16 block maximum; log1p",
+    "normalization": "one scalar mean/std fitted on training maps per fold only",
+    "selection": "maximum validation balanced accuracy, then minimum validation BCE; earliest exact tie",
+    "architecture": "Conv3x3(1,8)-ReLU-MaxPool2; Conv3x3(8,16)-ReLU-MaxPool2; Conv3x3(16,32)-ReLU; global mean+max; Linear(64,1)",
+    "augmentation": "none",
+    "loss": "unweighted BCEWithLogitsLoss",
+    "optimizer": "Adam",
+    "evaluation": "six frozen source-holdout folds primary; ordinary split reference; three seeds"
+  },
+  "raw_files": {
+    "batch_013.xz": "3a1a58458bcf63b4b3ba5957a5f5cab60e87bba4e762d2b84fb46b97e0e4807a",
+    "batch_014.xz": "8cd3993f017dd745684635e331bc72a39ac49178dfbc66b87eed829d6164222a",
+    "batch_015.xz": "230b1b533c4963cb969c369deb0fa4831bd2fccad9c1727ac1c0c73da63e0c4e",
+    "batch_016.xz": "652887590e2ea50f58eabcc6d09b3256fd1dfe6707d7deeb454c0f3c6ea1afe1",
+    "batch_017.xz": "5e71bbd5361de1b1d4b6ee421cdf769d71fbf2dbdce339d60b63510ed9fd7d25",
+    "batch_018.xz": "34deeb8312fca2f52a37963204f70c2cb645656c8aeea8b4a7611b38ad2e93a4",
+    "batch_019.xz": "35a2ab2b6037c6f8adfc6614dfd6daa43c419e3824288be156c98130aab3e845"
+  },
+  "cache_sha256": "da8c5ddd782b681ed34613e351f813dd830a8c1eaef2b7e45085c466696de5b5"
+}

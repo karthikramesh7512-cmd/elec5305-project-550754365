@@ -1,0 +1,9 @@
+# Final-stage CNN environment. The original requirements.txt is unchanged.
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.17.1
+matplotlib==3.10.7
+scikit-learn==1.9.1
+torch==2.9.0
+# GPU experiment used torch 2.9.0+cu126 on an RTX 3060 Laptop GPU.
+# Obtain the matching CUDA wheel via the official PyTorch wheel index if needed.

@@ -1,0 +1,14 @@
+ELEC5305 | DSP + CNN saved-model demonstration
+Previously evaluated test examples, selected by first sample ID per source; not a new test set.
+Input: ROI -> DC removal -> Hilbert envelope -> block max -> log1p (already cached).
+Loading fold-specific training normalization and seed-42 weights; threshold = 0.5.
+     sample_id  fold  true_label  probability  prediction
+   batch_013:1     1           1     0.422314           0
+ batch_013:107     2           1     1.000000           1
+ batch_013:101     3           1     1.000000           1
+ batch_013:110     4           1     1.000000           1
+batch_013:1000     5           1     1.000000           1
+ batch_013:133     6           1     1.000000           1
+ batch_013:112     1           0     0.000817           0
+For full six-fold / three-seed metrics, read results/dsp_cnn/cnn_summary.csv.
+Limitation: all experimental negative rows repeat one background.

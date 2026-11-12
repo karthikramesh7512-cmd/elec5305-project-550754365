@@ -1,0 +1,12 @@
+{
+  "protected_files_unchanged": 105,
+  "all_test_ids_match_frozen_manifests": true,
+  "models": 21,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "test_used_for_selection": false,
+  "limitation": "All 3558 no-flaw rows repeat one raw image; specificity is not independent-background generalisation. Related augmented positives also limit independence. Seeds measure initialization variation, not independent datasets."
+}

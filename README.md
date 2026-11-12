@@ -1,8 +1,49 @@
-# Generalisation and Robustness of DSP and Machine Learning for Ultrasonic Flaw Detection
+# Generalisation of DSP and Learned Models for Ultrasonic Flaw Detection
 
-**ELEC5305 — Project Feedback Two**
+**ELEC5305 Final Project | Karthik Ramesh | SID 550754365**
 
-[Project proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf) · [Results summary CSV](docs/methodology/results_table_submission2.csv)
+[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) · [Demonstration video (MP4, 2 min 41 s)](docs/video/project_demo.mp4) · [Report text](docs/final_report.md) · [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
+
+## Final experiment: DSP versus DSP + CNN
+
+**Does a compact CNN after the shared DSP front end improve detection of previously unseen flaw sources?**
+
+The frozen six-source evaluation gives macro recall of **66.67% for DSP**, **85.07% for DSP + CNN** (three-seed SD 1.02 percentage points), and **99.79% for the saved SVM**. The CNN detects the 3 mm source but has only **10.42% mean recall for the 2 mm source**. It improves on the frozen DSP operating point, but **does not outperform the SVM**. CNN ROC-AUC is 1.0 in all evaluated folds, exposing ranking versus operating-threshold transfer. No test-driven retuning was performed.
+
+All 3,558 negative rows repeat one raw background. Specificity therefore does not demonstrate generalisation to independent no-flaw acquisitions. All 105 protected original data/result files remain unchanged.
+
+![DSP SVM and CNN held-out recall](results/dsp_cnn/comparison_recall.png)
+
+[Full results](results/dsp_cnn/results_summary.md) · [All 21 seed/evaluation rows](results/dsp_cnn/cnn_summary.csv) · [Fixed CNN protocol](docs/methodology/final_cnn_protocol.md)
+
+### Run the saved-model demonstration
+
+Use Python 3.11. Create and activate a virtual environment, then from the repository root:
+
+```powershell
+python -m pip install -r requirements-cnn.txt
+python src/demo_cnn.py
+python src/verify_cnn_results.py
+```
+
+The demo runs on CPU and uses seven included, previously evaluated examples selected by a fixed sample-ID rule. It does not require raw data or retraining, and it shows the missed 2 mm example as well as successful detections. The verifier independently checks all saved CNN predictions, exact test IDs, selection records and baseline preservation. Only load model checkpoints obtained from this trusted project.
+
+To reproduce training, obtain the original experimental dataset externally and run in a fresh copy without completed CNN results:
+
+```powershell
+python src/dsp_cnn.py --dataset-dir "PATH/TO/datasets"
+```
+
+The training script validates raw-image hashes, builds an ignored local cache, trains all checkpoints before any test evaluation, and refuses to overwrite a completed CNN experiment. The recorded GPU environment used torch 2.9.0+cu126; obtain the appropriate wheel from the official PyTorch index if using CUDA. Exact CPU/GPU numerical reproducibility across platforms is not assumed.
+
+### Final additions
+
+- `src/dsp_cnn.py`, `src/demo_cnn.py`, `src/verify_cnn_results.py`
+- `tests/test_dsp_cnn.py`, `requirements-cnn.txt`
+- `data/cnn_demo_samples.npz`, `results/dsp_cnn/` (weights, histories, selection IDs, predictions and figures)
+- `docs/ELEC5305_Final_Report.pdf`, `docs/final_report.md`, `docs/video/project_demo.mp4`
+
+The sections below retain the first-stage DSP/SVM methodology and evidence. Historical reports under `results/dsp_baseline/` and `results/svm/` describe that stage; statements there that no CNN was implemented predate this extension.
 
 ## 1. Project overview
 
@@ -199,7 +240,7 @@ original command spellings; use the relocated paths above.
 
 ## 12. Future work
 
-Planned extensions are a compact CNN, controlled noise robustness experiments,
+The compact DSP-envelope CNN comparison is complete. Remaining extensions are controlled noise robustness experiments,
 simulated-to-real evaluation, and FMC/TFM localisation. These experiments have
 **not** been completed in the current first-half project. Future evaluation also
 needs genuinely diverse no-flaw acquisitions.

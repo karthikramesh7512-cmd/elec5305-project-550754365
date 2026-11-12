@@ -1,0 +1,4 @@
+{
+  "conclusion": "Across the six held-out sources, CNN macro recall is 85.07% (seed SD 1.02 percentage points), compared with 66.67% for DSP and 99.79% for the SVM. CNN macro balanced accuracy is 92.54% (seed SD 0.51 points), versus 83.33% for DSP and 99.89% for the SVM.",
+  "small_sources": "For P41_01, CNN recall is 10.42% +/- 6.14 percentage points across seeds. For P41_02, CNN recall is 100.00% +/- 0.00 percentage points across seeds."
+}
