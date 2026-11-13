@@ -1,0 +1,6 @@
+{
+  "input": "results/dsp_cnn/per_sample_results.csv",
+  "input_sha256": "bd03a42e0aefd21591b51d182d56bff4b02b848951b3bb9329a753d5bf086352",
+  "operation": "Descriptive plot and score extrema from frozen fold-1 predictions; no inference, tuning or fitting",
+  "jitter": "Visualization only; seeded vertical jitter does not change x/logit values"
+}

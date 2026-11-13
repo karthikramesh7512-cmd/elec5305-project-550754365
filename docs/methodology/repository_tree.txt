@@ -13,6 +13,12 @@ data/splits/source_holdout_folds.csv
 docs/ELEC5305_Final_Report.pdf
 docs/final_report.md
 docs/methodology/README.md
+docs/methodology/cnn_pipeline_final.png
+docs/methodology/cnn_pipeline_final.svg
+docs/methodology/cnn_score_transfer.png
+docs/methodology/cnn_score_transfer.svg
+docs/methodology/cnn_threshold_audit.csv
+docs/methodology/cnn_threshold_provenance.json
 docs/methodology/create_submission2_figures.py
 docs/methodology/draw_methodology_pipeline.py
 docs/methodology/figure_balanced_accuracy_by_source.png
@@ -221,6 +227,7 @@ src/dsp_diagnostics.py
 src/extract_features.py
 src/finalize_svm_report.py
 src/inspect_ultrasonic_data.py
+src/plot_final_diagnostics.py
 src/svm_baseline.py
 src/verify_cnn_results.py
 tests/test_dsp_baseline.py

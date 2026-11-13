@@ -2,7 +2,7 @@
 
 **ELEC5305 Final Project | Karthik Ramesh | SID 550754365**
 
-[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) · [Demonstration video (MP4, 2 min 41 s)](docs/video/project_demo.mp4) · [Report text](docs/final_report.md) · [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
+[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) Â· [Demonstration video (MP4, 2 min 41 s)](docs/video/project_demo.mp4) Â· [Report text](docs/final_report.md) Â· [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
 
 ## Final experiment: DSP versus DSP + CNN
 
@@ -14,7 +14,9 @@ All 3,558 negative rows repeat one raw background. Specificity therefore does no
 
 ![DSP SVM and CNN held-out recall](results/dsp_cnn/comparison_recall.png)
 
-[Full results](results/dsp_cnn/results_summary.md) · [All 21 seed/evaluation rows](results/dsp_cnn/cnn_summary.csv) · [Fixed CNN protocol](docs/methodology/final_cnn_protocol.md)
+[CNN score-transfer diagnostic](docs/methodology/cnn_score_transfer.png) · [Architecture diagram](docs/methodology/cnn_pipeline_final.png)
+
+[Full results](results/dsp_cnn/results_summary.md) Â· [All 21 seed/evaluation rows](results/dsp_cnn/cnn_summary.csv) Â· [Fixed CNN protocol](docs/methodology/final_cnn_protocol.md)
 
 ### Run the saved-model demonstration
 
@@ -35,6 +37,8 @@ python src/dsp_cnn.py --dataset-dir "PATH/TO/datasets"
 ```
 
 The training script validates raw-image hashes, builds an ignored local cache, trains all checkpoints before any test evaluation, and refuses to overwrite a completed CNN experiment. The recorded GPU environment used torch 2.9.0+cu126; obtain the appropriate wheel from the official PyTorch index if using CUDA. Exact CPU/GPU numerical reproducibility across platforms is not assumed.
+
+The final report now includes a critical 2021-2025 literature comparison, explicit DSP/CNN equations and architecture dimensions, design rationale, and a saved-logit diagnostic. It also distinguishes the SVM's 25-configuration search from the CNN's single fixed configuration; these results rank the implemented pipelines rather than the model families in general.
 
 ### Final additions
 
@@ -59,14 +63,14 @@ generalise to previously unseen ultrasonic flaw sources?
 
 ## 3. Dataset
 
-The first-half experiment uses NDT_ML_Flaw experimental batches **013–019**:
+The first-half experiment uses NDT_ML_Flaw experimental batches **013â€“019**:
 **7,000 samples**, comprising **3,442 flaw** and **3,558 no-flaw** rows.
 The six experimental source flaws are P41_01, P41_02, P41_03, P41_04,
-P41_05 and P41_06_notch. Images are decoded as 480 × 7168 little-endian
+P41_05 and P41_06_notch. Images are decoded as 480 Ã— 7168 little-endian
 int16 arrays; decoding evidence is in the inspection report.
 
 Raw dataset files are excluded. `data/metadata.csv` includes both experimental
-and simulated metadata; batches 201–210 are not part of the current experiment.
+and simulated metadata; batches 201â€“210 are not part of the current experiment.
 Derived features, audits and split manifests are included. Obtain the original dataset from [NDT_ML_Flaw](https://github.com/koomas/NDT_ML_Flaw); raw images are not included in this repository.
 
 ## 4. Dataset audit
@@ -159,7 +163,7 @@ Full-precision evidence: [DSP summary](results/dsp_baseline/dsp_summary.csv),
 
 ![DSP scores and validation-derived thresholds](docs/methodology/figure_dsp_score_thresholds.png)
 
-[Score/threshold SVG](docs/methodology/figure_dsp_score_thresholds.svg) · [Full-precision figure data](docs/methodology/results_table_submission2.csv)
+[Score/threshold SVG](docs/methodology/figure_dsp_score_thresholds.svg) Â· [Full-precision figure data](docs/methodology/results_table_submission2.csv)
 
 These figures use saved CSV outputs only. They do not involve new model fits or experiments.
 

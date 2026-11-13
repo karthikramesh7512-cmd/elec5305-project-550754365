@@ -26,23 +26,38 @@ Ultrasonic inspection identifies internal reflectors through the amplitude and s
 
 The single research question is: **Does replacing the final deterministic DSP decision rule with a compact CNN improve ultrasonic flaw detection on previously unseen P41 source labels, using the same experimental data and frozen evaluation folds?** The SVM is an additional learned reference that helps distinguish an advantage over a simple threshold from an advantage specific to convolutional feature learning.
 
+The reviewed ultrasonic studies link performance to flaw composition and inspection context [1,2,5]. That motivates a bounded question about source transfer rather than treating random-split accuracy as evidence of general inspection capability.
+
+This project contributes an image-identity audit, a frozen-source comparison with per-sample provenance, and a direct diagnosis of why score ranking and operating recall can diverge. Published methods motivate the experiment; the additional CNN and audit do not constitute a reproduction of those networks.
+
 The first project stage established the dataset audit and DSP/SVM baselines. The final extension adds a compressed-envelope CNN, repeated-seed evaluation, saved inference demonstration and direct comparison. The scope is binary detection. Localisation, equivalent crack sizing, noise robustness and simulated-to-real transfer are not claimed as completed outcomes.
 
 ## 2 Literature review and conceptual background
 
-### 2.1 Representative ultrasonic training data
+### 2.1 Data diversity and source exclusion
 
-Virkkunen et al. [1] investigate convolutional detection with virtual-flaw augmentation to address scarce representative ultrasonic examples. Their work motivates learning spatial signal patterns rather than relying only on amplitude thresholds. Augmentation expands the available images, but it does not automatically supply independent physical flaws. For the present project, this distinction motivates auditing raw-image identity and treating ordinary image-level results as a reference. This experiment does not reproduce their network, human-inspector comparison or acquisition conditions; its small CNN is an intentionally simpler implementation.
+Virkkunen et al. [1] combine B-scan CNN classification with virtual-flaw augmentation. Their blind human/network comparison uses 200 images, including 86 with cracks; however, the underlying raw data contain only three real cracks. The strength is an inspection-relevant comparison rather than image accuracy alone. Its limitation is that many augmented observations do not supply comparable physical-flaw diversity. This project consequently audits image identity and separates source labels; it does not reproduce their inspector comparison or probability-of-detection qualification.
 
-Koskinen et al. [2] examine how flaw type and training flaw size affect CNN generalisation. Their findings motivate source-based exclusion: a model may learn characteristics of its training indications and transfer differently to other reflectors. This project therefore holds out P41 labels and examines source-wise recall instead of reporting only pooled accuracy. The dataset's original flaw-size values remain metadata for analysis, not model inputs. The published work establishes a relevant question, not a directly comparable numerical benchmark for the present folds.
+Koskinen et al. [2] test excluded flaw types after varying the training sources, measuring probability of detection (POD) and false calls. Their medium-flaw training case misses smaller indications. This motivates source-wise evaluation, while their different training combinations and POD endpoint prevent direct numerical comparison with this report.
 
-### 2.2 Learned decision rules and representation choice
+The distinction is between generating more observations and representing more inspection conditions. Source separation addresses one dependence mechanism, but cannot repair the single negative background found in this dataset. A model can appear reliable because normal examples are unusually easy, even when its positive-source transfer remains weak.
 
-Cortes and Vapnik [3] establish support-vector classification through a margin-based decision surface and nonlinear feature mappings. The existing SVM is a useful low-capacity reference because it uses a small, interpretable DSP feature set. Its strength is computational simplicity; its limitation is dependence on the chosen features. It cannot discover spatial features that were discarded during extraction.
+### 2.2 Representation learning and recent directions
 
-LeCun et al. [4] demonstrate convolutional learning for structured image recognition. Local connectivity and shared filters motivate the present CNN's use of envelope maps. Translation-tolerant pooling can reduce sensitivity to indication location, but also discards information. This general architectural motivation is not evidence that a CNN will outperform an SVM on a small ultrasonic dataset.
+Cortes and Vapnik [3] motivate the SVM's margin-based classifier, whereas LeCun et al. [4] motivate local filters and weight sharing. The practical trade-off here is feature control versus representation flexibility: the SVM uses interpretable summaries; the CNN retains a compressed spatial map but must learn useful filters from limited source diversity. Neither theory guarantees superiority on these data.
 
-These publications support established approaches relevant to this question. They are not an exhaustive survey or a claim that the compact model represents the newest state of the art. The local contribution is to compare a deliberately small convolutional extension against frozen baselines under an explicit source-exclusion protocol.
+Herve-Cote et al. [5] generate sectoral PAUT scans from limited FMC acquisitions and report that incorporating median-scan inspection context improves CNN detection. This gives a relevant alternative to simply enlarging a classifier: provide information about geometry. However, sectoral-scan context is not available as an equivalent input here. Their result motivates a future context-aware comparison, not an unsupported claim that this map-only CNN reproduces their performance.
+
+McKnight et al. [6] use self-supervised forecasting on nominally sound CFRP data to identify anomalous regions and produce volumetric segmentation. They evaluate flat-bottom holes and PTFE inserts, including stepped geometries. This reduces dependence on labelled flaw examples and shifts the modelling problem toward learning normal structure. For this project, however, one repeated normal image is insufficient evidence for a realistic normal distribution. Different materials, tasks and metrics also prevent direct numerical comparison.
+
+| Study | Approach and evaluation | Implication for this project |
+|---|---|---|
+| Virkkunen et al. [1] | Virtual flaws; CNN; blind inspector comparison | Augmentation does not establish physical diversity |
+| Koskinen et al. [2] | Alter training sources; test excluded types | Evaluate small-source transfer explicitly |
+| Herve-Cote et al. [5] | FMC-derived sectoral scans with geometric context | Context is a competing route to better features |
+| McKnight et al. [6] | Sound-data forecasting; volumetric anomaly segmentation | Independent normal data are needed for this alternative |
+
+These selected 2021-2025 studies show two relevant research directions: improving the information presented to supervised models and reducing dependence on labelled flaws through anomaly modelling. Both remain constrained by representative acquisitions and evaluation design. The narrow gap addressed here is whether a lightweight envelope-map CNN improves the operating performance of an existing deterministic detector when positive source labels are excluded. It is a controlled local contribution, not an architectural state-of-the-art claim.
 
 ### 2.3 Concepts needed to interpret the experiment
 
@@ -70,7 +85,21 @@ The frozen DSP detector crops columns 1100:3100, removes each A-scan mean and co
 
 The saved SVM uses 12 engineered features including envelope amplitude statistics, RF RMS/energy, envelope energy, crest factor, peak counts, persistence, response width and spatial peak statistics. A training-only StandardScaler precedes the SVM. The original linear/RBF grid and validation selection are reused as historical evidence, without refitting. Comparing the CNN to this stronger reference guards against attributing every improvement over thresholding to deep learning.
 
+The saved SVM search uses linear C in {0.01, 0.1, 1, 10, 100}, or RBF C in {0.1, 1, 10, 100} with gamma in {scale, 0.001, 0.01, 0.1, 1}. Validation balanced accuracy chooses the configuration; fixed grid order breaks ties. Training and validation are not combined for a refit. The 12 features and original fitting records remain documented in the saved SVM report.
+
 ### 3.4 DSP plus CNN pipeline
+
+The DSP front end can be written compactly for scan line s and cropped sample t:
+
+`x_c(s,t) = x(s,t) - mean_t[x(s,t)]`
+
+`E(s,t) = abs(x_c(s,t) + j H_t[x_c(s,t)])`
+
+`M(i,k) = log(1 + max E[8i:8i+8, 16k:16k+16])`
+
+Here H denotes the Hilbert transform along the time/depth axis. The deterministic detector reduces E to a maximum spatial response; the CNN retains a coarse two-dimensional map M. For each evaluation, the CNN input is `(M - mu_train) / sigma_train`, using one scalar mean and standard deviation fitted on training maps only. Its output logit z is converted to `p = 1 / (1 + exp(-z))`; the frozen rule is `z >= 0`, equivalently `p >= 0.5`. A high ranking AUC does not require that a useful boundary coincides with zero.
+
+![Figure 1 Shared DSP preprocessing and the added CNN representation and decision stages. No source label or flaw annotation enters the network.](methodology/cnn_pipeline_final.png)
 
 The CNN shares the same crop, DC removal and Hilbert magnitude. Non-overlapping 8 by 16 block maxima compress the 480 by 2000 envelope to 60 by 125. Fixed log1p compression reduces its dynamic range. Maximum pooling retains local peaks efficiently, but can suppress fine morphology. A scalar mean and standard deviation are estimated from training maps separately in each fold; no validation or test inputs contribute to these fitted values. Source, size, location, depth and labels are excluded from the network input.
 
@@ -78,7 +107,27 @@ Three padded 3 by 3 convolutions use 8, 16 and 32 output channels, each with ReL
 
 Adam uses learning rate 0.001, weight decay 0.0001 and batch size 64 with unweighted binary cross entropy. The fixed budget is 20 epochs and patience is five epochs without improvement under the checkpoint ordering. Seeds 42, 43 and 44 are all reported; the best test seed is not selected. No additional augmentation or pretrained weights are used. The decision threshold is fixed at 0.5 sigmoid score. Training uses PyTorch 2.9.0+cu126 and an NVIDIA RTX 3060 Laptop GPU with deterministic algorithms enabled.
 
-### 3.5 Intended coverage and verification
+### 3.5 Architecture and design rationale
+
+| Stage | Output excluding batch axis | Parameters |
+|---|---|---|
+| DSP map and training scaling | 1 x 60 x 125 | 0 fitted network weights |
+| Conv 3 x 3 then ReLU | 8 x 60 x 125 | 80 |
+| MaxPool 2 x 2 | 8 x 30 x 62 | 0 |
+| Conv 3 x 3 then ReLU | 16 x 30 x 62 | 1,168 |
+| MaxPool 2 x 2 | 16 x 15 x 31 | 0 |
+| Conv 3 x 3 then ReLU | 32 x 15 x 31 | 4,640 |
+| Global average and maximum concatenation | 64 | 0 |
+| Linear logit | 1 | 65 |
+| Total | Binary detection score | 5,953 |
+
+Block maxima reduce the map from 960,000 to 7,500 values, a 128-fold reduction, while retaining the strongest envelope sample in each block. This is motivated by echo detectability and memory efficiency, rather than proof that 8 by 16 is optimal. Its cost is loss of within-block morphology and position. Fixed log1p compression moderates amplitude range without dividing every image by its own maximum, which would remove absolute amplitude information that may aid detection.
+
+Three small convolution layers offer hierarchical local filtering with a modest parameter count. The 3 by 3 filters encode a local-pattern assumption; pooling reduces spatial resolution and permits some positional tolerance. Global average pooling summarizes distributed responses, while global maximum pooling retains strong local responses. Concatenating them limits reliance on either statistic alone. The small linear head avoids a large position-specific dense layer. These are engineering rationales, not conclusions from an architecture search or feature-importance study.
+
+The learning rate, weight decay, 20-epoch cap and patience of five were fixed practical choices for a compact, deadline-bounded experiment. They were not demonstrated to be optimal. Early stopping and three seeds provide limited checks on training behaviour but do not replace a validation-based configuration search. Binary cross entropy is `L = -mean[y log(p) + (1-y) log(1-p)]`; equal class weighting is used because the row classes are approximately balanced, not because physical acquisition frequencies are known.
+
+### 3.6 Intended coverage and verification
 
 The intended comparison measures source-wise detection, ordinary-split reference performance, training variability and computational burden. Every seed reports confusion counts, accuracy, recall, precision, F1, specificity, balanced accuracy and ROC-AUC. Macro averages weight each held-out source equally; seed standard deviations describe training variation, not uncertainty across independent specimens. Per-sample outputs and full-precision tables accompany rounded report values.
 
@@ -101,11 +150,17 @@ CNN values are mean +/- sample standard deviation across three seeds. DSP and SV
 
 Across the six held-out sources, CNN macro recall is 85.07% (seed SD 1.02 percentage points), compared with 66.67% for DSP and 99.79% for the SVM. CNN macro balanced accuracy is 92.54% (seed SD 0.51 points), versus 83.33% for DSP and 99.89% for the SVM. For P41_01, CNN recall is 10.42% +/- 6.14 percentage points across seeds. For P41_02, CNN recall is 100.00% +/- 0.00 percentage points across seeds. Source-specific results must be inspected alongside these macro averages because a strong aggregate can conceal poor recall on the smallest source.
 
-![Figure 1 Source-wise recall for the frozen DSP detector saved SVM and DSP plus CNN. CNN bars show seed means and error bars show seed standard deviation.](../results/dsp_cnn/comparison_recall.png)
+![Figure 2 Source-wise recall for the frozen DSP detector saved SVM and DSP plus CNN. CNN bars show seed means and error bars show seed standard deviation.](../results/dsp_cnn/comparison_recall.png)
 
-![Figure 2 Balanced accuracy for the same source-holdout test rows. High specificity is limited to one repeated negative background.](../results/dsp_cnn/comparison_balanced_accuracy.png)
+![Figure 3 Balanced accuracy for the same source-holdout test rows. High specificity is limited to one repeated negative background.](../results/dsp_cnn/comparison_balanced_accuracy.png)
 
-### 4.2 Confusion counts and ordinary reference
+### 4.2 Direct evidence of operating-point transfer
+
+The following plot uses only saved fold-1 test logits, without rerunning inference. For each seed, every 2 mm positive logit exceeds every negative logit, consistent with ROC-AUC 1.0. Nevertheless, most positive logits remain below the frozen zero boundary. Thus the failure is visible in the score geometry: rank separation is preserved while the chosen operating point rejects most small-flaw rows. The plot diagnoses this saved result; it is not used to choose a replacement threshold.
+
+![Figure 4 Saved CNN logits for the held-out 2 mm source and repeated negatives. Horizontal positions are actual scores; seeded vertical jitter separates overlapping markers for visibility. The dashed line is the unchanged logit threshold of zero. Negative markers represent repeated rows of one background, not independent acquisitions.](methodology/cnn_score_transfer.png)
+
+### 4.3 Confusion counts and ordinary reference
 
 Across source-holdout folds, each seed evaluates all 7,000 rows once. The pooled confusion counts below weight rows rather than sources, so they answer a different aggregation question from macro recall.
 
@@ -123,11 +178,11 @@ The ordinary split gives the following CNN reference results. Both saved DSP and
 | 43 | 100.00 | 100.00 | 100.00 | 1.0000 |
 | 44 | 100.00 | 100.00 | 100.00 | 1.0000 |
 
-### 4.3 Training behaviour and computational burden
+### 4.4 Training behaviour and computational burden
 
 Selected epochs range from 3 to 20. Recorded training time totals 2.66 minutes across 21 fits, with median 8.35 seconds per fit on the stated GPU. This excludes decompression, preprocessing, cache generation and test inference. The parameter count is small, but CNN training and map generation introduce costs absent from the frozen threshold detector. No matched end-to-end timing benchmark was conducted, so these numbers do not establish deployment throughput or fair latency ratios against DSP/SVM.
 
-![Figure 3 Validation balanced accuracy over epochs for each source-holdout fold and all three seeds. Curves concern validation only; checkpoint selection does not use test results.](../results/dsp_cnn/validation_curves.png)
+![Figure 5 Validation balanced accuracy over epochs for each source-holdout fold and all three seeds. Curves concern validation only; checkpoint selection does not use test results.](../results/dsp_cnn/validation_curves.png)
 
 ## 5 Discussion
 
@@ -139,17 +194,27 @@ The comparison tests a specific operating pipeline: shared DSP preprocessing fol
 
 The saved DSP ROC-AUC remains 1.0 in every evaluation despite zero recall for the two smallest held-out sources. Its validation threshold is effectively constrained by the validation source's amplitude range; a smaller test-source response can remain above all negatives but below that threshold. This is a calibration/operating-point failure rather than loss of ranking. A learned rule can exploit additional spatial or amplitude relationships, but a CNN's fixed 0.5 score threshold can also fail under source shift. The experiment does not identify a causal explanation for every error without an additional ablation.
 
-### 5.2 Relationship to published work
+The fold composition gives a concrete interpretation of the small-source asymmetry. Fold 1 excludes both the 2 mm test source and the 3 mm validation source from training; its four training source labels have nominal sizes of 6 mm or larger. Fold 2, by contrast, includes the 2 mm source in training when testing the 3 mm source. This is consistent with difficult downward transfer in source size, but it does not isolate size causally: reflector type, augmentation and response amplitude also differ.
 
-The emphasis on source composition is consistent with Koskinen et al.'s concern that training flaw characteristics affect generalisation [2]. This study extends that concern to a controlled comparison with deterministic DSP and an engineered-feature model. It does not contradict or reproduce published probability-of-detection or human-level results: acquisition conditions, network architectures and evaluation definitions differ. No industrial POD qualification follows from row-level recall in this dataset.
+### 5.2 Unequal model development budgets
 
-### 5.3 What the comparison does and does not isolate
+The SVM underwent a validation search over 25 configurations: five linear C values and 20 RBF C/gamma combinations. The CNN used one architecture and optimizer configuration, repeated across three seeds. Seeds explore training variability, not alternative architectures or learning rates. Therefore, the SVM had a broader configuration-selection opportunity, while the CNN had repeated initializations. This comparison ranks the saved pipelines under their actual development budgets; it does not establish that SVMs intrinsically outperform CNNs or that a fairly optimized CNN would necessarily improve.
+
+There is also an operating-rule difference. DSP selects its threshold on validation rows, whereas the CNN fixes a sigmoid threshold of 0.5 and uses validation for checkpoint selection. Shared test samples make the outcome comparison controlled, but do not make model-selection procedures identical. A stronger follow-up would assign comparable validation-search budgets and predefine threshold selection for each method, then evaluate on fresh held-out acquisitions. Choosing a new threshold from the test-score gap in Figure 4 would invalidate the current test as an untouched assessment.
+
+### 5.3 Relationship to published work
+
+The poor 2 mm recall is directionally consistent with Koskinen et al.'s observation that training on larger indications can leave smaller unseen flaws difficult [2]. This report adds a different diagnostic: the saved logits still rank that source perfectly, so failure at the frozen boundary is demonstrably different from an inability to order the examples. This does not identify which learned features caused the score shift. A feature or normalization ablation would be needed for that causal claim.
+
+The context-aware and sound-data approaches [5,6] suggest distinct follow-up questions: whether additional acquisition context changes the decision boundary, and whether diverse sound acquisitions support an anomaly detector. Neither can be evaluated convincingly by recycling the single repeated negative image. The present results therefore complement these research directions through a data-quality and operating-point diagnosis; they neither reproduce nor contradict their published performance.
+
+### 5.4 What the comparison does and does not isolate
 
 Keeping the raw samples, ROI and fold manifests fixed reduces obvious confounding from different datasets or easier test partitions. However, the CNN also changes representation through block pooling and log compression. A performance difference cannot be assigned solely to convolutional architecture, since these representation choices are not ablated. Useful follow-up comparisons would include an MLP on the same maps, a CNN without compression, and validation-selected CNN thresholds. Such experiments should be designed on fresh development data rather than adapted after observing these test results.
 
 Three seeds make initialization sensitivity visible but are not independent physical experiments. Reporting all seeds avoids choosing a favourable test run; it does not establish a confidence interval for future flaws. Likewise, the six source labels are a limited and related set. Mean performance across them is descriptive and should not be assigned a broad population interpretation or an unsupported significance claim.
 
-### 5.4 Principal limitations and how to resolve them
+### 5.5 Principal limitations and how to resolve them
 
 The repeated negative background is the strongest limitation. A model can recognize that background consistently while remaining untested on different couplings, materials, clutter or instruments. Consequently, specificity and false-positive counts must be read as performance on one repeated background. Resolving this requires independently acquired negative specimens and acquisition-group splits.
 
@@ -159,13 +224,17 @@ The map representation trades resolution for tractability. Narrow echoes can be 
 
 ## 6 Conclusion
 
-Across the six held-out sources, CNN macro recall is 85.07% (seed SD 1.02 percentage points), compared with 66.67% for DSP and 99.79% for the SVM. CNN macro balanced accuracy is 92.54% (seed SD 0.51 points), versus 83.33% for DSP and 99.89% for the SVM. DSP plus CNN improves the frozen DSP operating rule primarily by recovering the 3 mm source, while 2 mm recall remains poor. It does not outperform the SVM. All three methods retain perfect source-wise ranking in this experiment, which makes operating-point transfer a central issue rather than evidence of universal CNN superiority. The saved SVM provides a strong alternative learned decision boundary and prevents a claim that extra model complexity is automatically beneficial. The research question is answered for these six held-out source labels and the fixed representation; new-specimen generalisation and realistic false-positive control remain open.
+For this dataset and the frozen source-holdout protocol, adding the compact CNN improves macro recall over the deterministic detector by 18.40 percentage points, chiefly by recovering the 3 mm source. It does not outperform the saved engineered-feature SVM, and its mean 2 mm recall remains only 10.42%. Figure 4 establishes that ranking and the fixed operating boundary transfer differently even within the CNN pipeline.
+
+The contribution is the controlled comparison and its diagnosis, not a superior CNN architecture. Source-wise reporting and image-identity auditing reveal weaknesses hidden by perfect ordinary-split accuracy. The question is answered for these six source labels and actual development budgets; independent-background specificity and new-specimen generalisation remain unestablished. The next defensible experiment needs new acquisitions, comparable model-selection budgets and predefined threshold handling, rather than further tuning against these test results.
 
 ## 7 Reproducibility and references
 
 The repository includes working inference code, fixed demonstration inputs, all selected weights, split manifests, per-sample predictions, training curves and numerical verification. Run `python src/demo_cnn.py` for the portable demonstration and `python src/verify_cnn_results.py` to check the saved experiment without fitting a model. `requirements-cnn.txt` records the final-stage environment. Raw data and the large local cache are excluded; the original upstream dataset is linked in the README. Full training instructions and the fixed protocol are documented separately. The report and video are linked from the repository.
 
 AI assistance: OpenAI Codex assisted with implementation, experiment orchestration, verification and report preparation. The cited publications and upstream dataset are credited below; the author retains responsibility for the submitted analysis.
+
+### References
 
 [1] I. Virkkunen, T. Koskinen, O. Jessen-Juhler and J. Rinta-aho, "Augmented Ultrasonic Data for Machine Learning," Journal of Nondestructive Evaluation, vol. 40, art. 4, 2021. https://doi.org/10.1007/s10921-020-00739-5
 
@@ -174,3 +243,8 @@ AI assistance: OpenAI Codex assisted with implementation, experiment orchestrati
 [3] C. Cortes and V. Vapnik, "Support-vector networks," Machine Learning, vol. 20, pp. 273-297, 1995. https://doi.org/10.1007/BF00994018
 
 [4] Y. LeCun, L. Bottou, Y. Bengio and P. Haffner, "Gradient-based learning applied to document recognition," Proceedings of the IEEE, vol. 86, no. 11, pp. 2278-2324, 1998. https://doi.org/10.1109/5.726791
+
+
+[5] H. Herve-Cote, F. Dupont-Marillia and P. Belanger, "Automatic flaw detection in sectoral scans using machine learning," Ultrasonics, vol. 141, art. 107316, 2024. https://doi.org/10.1016/j.ultras.2024.107316
+
+[6] S. McKnight, V. Tunukovic, A. Hifi, S. G. Pierce, E. Mohseni, C. N. MacLeod and T. O'Hare, "Three-dimensional ultrasonic self supervised segmentation," Engineering Applications of Artificial Intelligence, vol. 154, art. 110870, 2025. https://doi.org/10.1016/j.engappai.2025.110870
