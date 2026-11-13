@@ -2,7 +2,7 @@
 
 **ELEC5305 Final Project | Karthik Ramesh | SID 550754365**
 
-[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) | [Demonstration video (MP4)](docs/video/project_demo.mp4) | [Report text](docs/final_report.md) | [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
+[Final research report (PDF, LaTeX)](docs/ELEC5305_Final_Report.pdf) | [LaTeX source (ZIP)](docs/ELEC5305_LaTeX_Source.zip) | [Demonstration video (MP4)](docs/video/project_demo.mp4) | [Report text](docs/final_report.md) | [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
 
 ## Final experiment: DSP versus DSP + CNN
 
@@ -21,6 +21,10 @@ All 3,558 negative rows repeat one raw background. Specificity therefore does no
 ### Completed supplementary studies
 
 Noise stress testing, simulation-trained transfer and a measured-FMC imaging pilot are complete. [Protocols, caveats and reproduction commands](docs/methodology/completed_extensions.md) | [Noise results](results/noise_robustness/) | [Transfer results](results/simulated_to_real/) | [TFM results](results/fmc_tfm/). Run `python src/verify_extensions.py` for the independent saved-result checks. The transfer domains share one identical no-flaw background; the TFM peak does not reliably locate the nominal tip.
+
+### LaTeX report source
+
+The research report is available as a [PDF](docs/ELEC5305_Final_Report.pdf), a [complete LaTeX source ZIP](docs/ELEC5305_LaTeX_Source.zip), and an [editable TeX file](docs/latex/ELEC5305_Final_Report.tex). The source package includes all figure assets and compilation instructions.
 
 ### Run the saved-model demonstration
 
