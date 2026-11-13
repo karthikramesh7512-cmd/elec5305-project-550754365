@@ -15,3 +15,6 @@ elec5305-github.zip
 .cnn_cache/
 .extension_cache/
 demo_output/
+docs/demo/
+*.code-workspace
+src/demo_live.py
