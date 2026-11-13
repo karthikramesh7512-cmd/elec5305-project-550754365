@@ -1,0 +1,24 @@
+{
+  "row_count": 10000,
+  "stream_bytes": {
+    "batch_201": 6881280000,
+    "batch_202": 6881280000,
+    "batch_203": 6881280000,
+    "batch_204": 6881280000,
+    "batch_205": 6881280000,
+    "batch_206": 6881280000,
+    "batch_207": 6881280000,
+    "batch_208": 6881280000,
+    "batch_209": 6881280000,
+    "batch_210": 6881280000
+  },
+  "unique_raw_hashes": 5019,
+  "negative_unique_hashes": 1,
+  "positive_unique_hashes": 5018,
+  "source_target_identical_hashes": 1,
+  "source_target_overlap_hashes": [
+    "2fc5a1dd58b581fa3e383427e0bde5cc70885b249101be77f8994acb25c7ae4a"
+  ],
+  "decoding": "1000 headerless 480x7168 little-endian int16 images per stream",
+  "coordinates": "Simulation coordinate units/encoding differ and are not used. Size-code-to-mm mapping remains unverified."
+}

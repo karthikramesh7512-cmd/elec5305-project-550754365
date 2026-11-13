@@ -1,0 +1,5 @@
+{
+  "baseline_files_unchanged": 105,
+  "new_training": false,
+  "interpretation": "Descriptive synthetic AWGN stress test. Duplicate backgrounds share noise. Variation combines 3 noise draws and 3 CNN seeds; not a confidence interval for physical acquisitions. SVM was not included in this noise extension."
+}

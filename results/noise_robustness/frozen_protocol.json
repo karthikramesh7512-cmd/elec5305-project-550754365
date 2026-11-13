@@ -1,0 +1,92 @@
+{
+  "protocol": {
+    "noise_snr_db": [
+      20,
+      15,
+      10,
+      5,
+      0
+    ],
+    "noise_replicates": [
+      101,
+      102,
+      103
+    ],
+    "noise_definition": "AWGN added to DC-centred ROI; noise DC removed per A-scan and scaled to exact ROI RMS SNR. Repeated raw hashes share the same realization. Frozen models and thresholds; no retraining.",
+    "transfer_train_batches": [
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207
+    ],
+    "transfer_validation_batches": [
+      208
+    ],
+    "transfer_test_batches": [
+      209,
+      210
+    ],
+    "transfer_target": "All 7000 experimental rows, no target training or validation; encoded simulated sizes not mapped to millimetres.",
+    "tfm": {
+      "sound_speed_m_s": 5820,
+      "sample_rate_hz": 100000000,
+      "elements": 128,
+      "pitch_mm": 0.7,
+      "bandpass_mhz": [
+        2,
+        8
+      ],
+      "decimation": 5,
+      "grid_step_mm": 0.25,
+      "x_extent_mm": [
+        0,
+        90
+      ],
+      "z_extent_mm": [
+        1,
+        26
+      ],
+      "nominal_lower_tip_mm": [
+        35,
+        20
+      ],
+      "localization_search_mm": {
+        "x": [
+          29,
+          41
+        ],
+        "z": [
+          17,
+          21.5
+        ]
+      },
+      "time_zero_seconds": 0,
+      "model": "homogeneous longitudinal straight ray; full aperture; linear time interpolation",
+      "interpretation": "Metadata-assisted lower-tip ROI, not blind localisation. Nominal tip is approximate; weld anisotropy and time-zero uncertainty remain."
+    }
+  },
+  "checkpoints": {
+    "source_holdout_1_seed_42.pt": "8f9bd9b61dab0fbdd16de0bcf80869f2763f2d7e9945fe0eb005211bbebafeeb",
+    "source_holdout_1_seed_43.pt": "45bd70e51941372a212b73047ea5263ed924224c1d65c4a45d3aff091634289b",
+    "source_holdout_1_seed_44.pt": "87bc35523eca51492cff17943b016a77ba5c86c9fc788f93a58c614fff741668",
+    "source_holdout_2_seed_42.pt": "901ef6dbd154579d75e29343389f39122ed3d54e628f2b678133ee60ec9b2fc8",
+    "source_holdout_2_seed_43.pt": "1dc719070db246d52c650d41964329107be3f2f8389ebbab13e85f93f7e23494",
+    "source_holdout_2_seed_44.pt": "c6d69c8cedcbc97d666ee7c2bebb004e410b3fc398cf548c6185d1bad8abc44b",
+    "source_holdout_3_seed_42.pt": "79013c75f44ae8ec339e83c32b99616723aaa9626ed1ede61cd82a0c7f7dcf4a",
+    "source_holdout_3_seed_43.pt": "c7ad3622fdb1c9580d3039f49daa30663227c89a762f221adefb1f7ea8866ab8",
+    "source_holdout_3_seed_44.pt": "db1b35b1ed48080673d3d3e5d5868d5cbc2df79df0bed8b0ae6978239b41f13d",
+    "source_holdout_4_seed_42.pt": "0519e435ce16dbf64997078614a242c832bae3d5c8990fe11d2826143361c94a",
+    "source_holdout_4_seed_43.pt": "8bb28a5e939d92eadd56d0107a7ffc0f4c397c19e98850893b75869191fa843e",
+    "source_holdout_4_seed_44.pt": "24f1df4c6c4f2d86929b9f10b1ef76f76ce6ba70c9965337f60e30d4d49b43dd",
+    "source_holdout_5_seed_42.pt": "202d38f745023f6ebd970cbcd0ecebbd4b09d811bb740d1039ddffb029121264",
+    "source_holdout_5_seed_43.pt": "79455105faaa4eb88440b0f5b09ce8465583fee51ae4145a4eb50df13e53dc71",
+    "source_holdout_5_seed_44.pt": "18f0a67e2b86882b69339448a06ce0d448fa8c182ceca7e816291ce396ad76a5",
+    "source_holdout_6_seed_42.pt": "911f9c603320b18222da94bbaf3e2a07b6a145424e50d91fce21fcae22b737d2",
+    "source_holdout_6_seed_43.pt": "8cb4f355ed0c1c215d3368491a76ca740a0f1e3d671389c09b2bb12d566e9c9a",
+    "source_holdout_6_seed_44.pt": "285e6c7831f45831a2217f8d4230708a32b5d06033b4a935cbdf7032f220b196"
+  },
+  "source_code_sha256": "10b33babde2fc79ef14e83bf0262916b05469fc6a7eb4b4c5b197bf7db49581c"
+}

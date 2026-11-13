@@ -1,0 +1,186 @@
+{
+  "choice": {
+    "candidate": 24,
+    "kernel": "rbf",
+    "C": 100,
+    "gamma": 1,
+    "validation_balanced_accuracy": 0.9512195121951219
+  },
+  "trials": [
+    {
+      "candidate": 0,
+      "kernel": "linear",
+      "C": 0.01,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.8089430894308943
+    },
+    {
+      "candidate": 1,
+      "kernel": "linear",
+      "C": 0.1,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.850609756097561
+    },
+    {
+      "candidate": 2,
+      "kernel": "linear",
+      "C": 1,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.8932926829268293
+    },
+    {
+      "candidate": 3,
+      "kernel": "linear",
+      "C": 10,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.9105691056910569
+    },
+    {
+      "candidate": 4,
+      "kernel": "linear",
+      "C": 100,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.9186991869918699
+    },
+    {
+      "candidate": 5,
+      "kernel": "rbf",
+      "C": 0.1,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.8109756097560976
+    },
+    {
+      "candidate": 6,
+      "kernel": "rbf",
+      "C": 0.1,
+      "gamma": 0.001,
+      "validation_balanced_accuracy": 0.7327235772357723
+    },
+    {
+      "candidate": 7,
+      "kernel": "rbf",
+      "C": 0.1,
+      "gamma": 0.01,
+      "validation_balanced_accuracy": 0.7804878048780488
+    },
+    {
+      "candidate": 8,
+      "kernel": "rbf",
+      "C": 0.1,
+      "gamma": 0.1,
+      "validation_balanced_accuracy": 0.8109756097560976
+    },
+    {
+      "candidate": 9,
+      "kernel": "rbf",
+      "C": 0.1,
+      "gamma": 1,
+      "validation_balanced_accuracy": 0.8699186991869918
+    },
+    {
+      "candidate": 10,
+      "kernel": "rbf",
+      "C": 1,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.8628048780487805
+    },
+    {
+      "candidate": 11,
+      "kernel": "rbf",
+      "C": 1,
+      "gamma": 0.001,
+      "validation_balanced_accuracy": 0.7804878048780488
+    },
+    {
+      "candidate": 12,
+      "kernel": "rbf",
+      "C": 1,
+      "gamma": 0.01,
+      "validation_balanced_accuracy": 0.8109756097560976
+    },
+    {
+      "candidate": 13,
+      "kernel": "rbf",
+      "C": 1,
+      "gamma": 0.1,
+      "validation_balanced_accuracy": 0.8689024390243902
+    },
+    {
+      "candidate": 14,
+      "kernel": "rbf",
+      "C": 1,
+      "gamma": 1,
+      "validation_balanced_accuracy": 0.9044715447154471
+    },
+    {
+      "candidate": 15,
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.9024390243902439
+    },
+    {
+      "candidate": 16,
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": 0.001,
+      "validation_balanced_accuracy": 0.8109756097560976
+    },
+    {
+      "candidate": 17,
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": 0.01,
+      "validation_balanced_accuracy": 0.866869918699187
+    },
+    {
+      "candidate": 18,
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": 0.1,
+      "validation_balanced_accuracy": 0.9044715447154471
+    },
+    {
+      "candidate": 19,
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": 1,
+      "validation_balanced_accuracy": 0.9278455284552846
+    },
+    {
+      "candidate": 20,
+      "kernel": "rbf",
+      "C": 100,
+      "gamma": "scale",
+      "validation_balanced_accuracy": 0.9115853658536586
+    },
+    {
+      "candidate": 21,
+      "kernel": "rbf",
+      "C": 100,
+      "gamma": 0.001,
+      "validation_balanced_accuracy": 0.866869918699187
+    },
+    {
+      "candidate": 22,
+      "kernel": "rbf",
+      "C": 100,
+      "gamma": 0.01,
+      "validation_balanced_accuracy": 0.9065040650406504
+    },
+    {
+      "candidate": 23,
+      "kernel": "rbf",
+      "C": 100,
+      "gamma": 0.1,
+      "validation_balanced_accuracy": 0.9115853658536586
+    },
+    {
+      "candidate": 24,
+      "kernel": "rbf",
+      "C": 100,
+      "gamma": 1,
+      "validation_balanced_accuracy": 0.9512195121951219
+    }
+  ]
+}

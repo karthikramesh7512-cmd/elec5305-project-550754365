@@ -8,7 +8,7 @@ Demonstration video: https://github.com/karthikramesh7512-cmd/elec5305-project-5
 
 ## Abstract
 
-This study asks whether a compact convolutional classifier applied after a fixed ultrasonic DSP front end improves detection of previously unseen experimental flaw sources relative to a validation-thresholded DSP detector. Seven thousand experimental B-scans are evaluated with six frozen source-holdout folds; the ordinary image-level split is a reference. DSP cropping, per-A-scan DC removal and Hilbert-envelope extraction are shared, while the CNN learns from compressed envelope maps. Three fixed training seeds are evaluated without test-driven model selection. Across the six held-out sources, CNN macro recall is 85.07% (seed SD 1.02 percentage points), compared with 66.67% for DSP and 99.79% for the SVM. CNN macro balanced accuracy is 92.54% (seed SD 0.51 points), versus 83.33% for DSP and 99.89% for the SVM. The repeated no-flaw background and augmented positive images restrict the scope of these findings. The contribution is a controlled, reproducible comparison of deterministic thresholding, engineered-feature SVM and a small convolutional decision rule, not a claim of general industrial reliability.
+This study asks whether a compact convolutional classifier applied after a fixed ultrasonic DSP front end improves detection of previously unseen experimental flaw sources relative to a validation-thresholded DSP detector. Seven thousand experimental B-scans are evaluated with six frozen source-holdout folds; the ordinary image-level split is a reference. DSP cropping, per-A-scan DC removal and Hilbert-envelope extraction are shared, while the CNN learns from compressed envelope maps. Three fixed training seeds are evaluated without test-driven model selection. Across the six held-out sources, CNN macro recall is 85.07% (seed SD 1.02 percentage points), compared with 66.67% for DSP and 99.79% for the SVM. CNN macro balanced accuracy is 92.54% (seed SD 0.51 points), versus 83.33% for DSP and 99.89% for the SVM. The repeated no-flaw background and augmented positive images restrict the scope of these findings. Supplementary tests add frozen-model Gaussian-noise stress testing, simulation-trained transfer and measured full-matrix imaging. All simulation-trained methods score perfectly on the experimental target, but the domains share one identical negative image. The measured imaging pilot gives a 3.91 mm nominal-tip error after backwall calibration and does not establish reliable localisation. The contribution is a reproducible comparison and diagnosis of its limits, rather than industrial qualification.
 
 ## Contents
 
@@ -30,7 +30,7 @@ The reviewed ultrasonic studies link performance to flaw composition and inspect
 
 This project contributes an image-identity audit, a frozen-source comparison with per-sample provenance, and a direct diagnosis of why score ranking and operating recall can diverge. Published methods motivate the experiment; the additional CNN and audit do not constitute a reproduction of those networks.
 
-The first project stage established the dataset audit and DSP/SVM baselines. The final extension adds a compressed-envelope CNN, repeated-seed evaluation, saved inference demonstration and direct comparison. The scope is binary detection. Localisation, equivalent crack sizing, noise robustness and simulated-to-real transfer are not claimed as completed outcomes.
+The first project stage established the dataset audit and DSP/SVM baselines. The final extension adds a compressed-envelope CNN, repeated-seed evaluation, saved inference demonstration and direct comparison. The primary scope is binary detection. Three supplementary studies now test controlled additive-noise sensitivity, simulation-trained transfer, and a separate measured-FMC imaging feasibility example. They probe boundaries of the main conclusion; they do not establish industrial qualification or equivalent crack sizing.
 
 ## 2 Literature review and conceptual background
 
@@ -64,6 +64,10 @@ These selected 2021-2025 studies show two relevant research directions: improvin
 The analytic signal combines an RF trace with its Hilbert transform; its magnitude gives an envelope that reduces dependence on the carrier phase. A CNN applies learned spatial filters, followed here by nonlinear activations and pooling. Binary cross entropy trains a logit, and the sigmoid maps that logit to a score between zero and one. That score is not assumed to be calibrated probability under source shift.
 
 Recall is TP/(TP+FN), specificity is TN/(TN+FP), and balanced accuracy is their arithmetic mean. ROC-AUC describes ranking across thresholds; it does not guarantee good recall at a selected operating point. This distinction is essential because the saved DSP detector ranks each held-out source perfectly while missing both smaller sources at its validation-derived thresholds.
+
+### 2.4 Array imaging as a separate feasibility extension
+
+Holmes, Drinkwater and Wilcox [8] describe retaining every transmitter-receiver waveform and focusing the array during post-processing. This motivates total focusing method (TFM) reconstruction as a transparent physics-based imaging reference. Its strength is explicit travel-time geometry; its weakness here is dependence on the velocity and time-origin model in a welded specimen. The public Strathclyde FMC dataset [7] supplies measured array data and approximate flaw geometry for a small feasibility study. This imaging example uses different data and evaluates a different endpoint from the classifier comparison; it cannot show that the CNN localises flaws.
 
 ## 3 Methods
 
@@ -131,7 +135,29 @@ The learning rate, weight decay, 20-epoch cap and patience of five were fixed pr
 
 The intended comparison measures source-wise detection, ordinary-split reference performance, training variability and computational burden. Every seed reports confusion counts, accuracy, recall, precision, F1, specificity, balanced accuracy and ROC-AUC. Macro averages weight each held-out source equally; seed standard deviations describe training variation, not uncertainty across independent specimens. Per-sample outputs and full-precision tables accompany rounded report values.
 
-Independent saved-result checks verify test coverage, labels, decisions, ROC-AUC, confusion counts, training/validation membership, checkpoint selection and baseline preservation. The short demonstration loads saved weights and fixed examples without retraining. Generalisation to new backgrounds would require additional independent acquisitions. The original proposal's FMC/TFM, simulated transfer and controlled-noise extensions remain uncompleted, rather than being implied by this detection experiment.
+Independent saved-result checks verify test coverage, labels, decisions, ROC-AUC, confusion counts, training/validation membership, checkpoint selection and baseline preservation. The short demonstration loads saved weights and fixed examples without retraining. Generalisation to new backgrounds would require additional independent acquisitions. The supplementary protocols below extend coverage without altering any original model, split or result. Independent physical no-flaw acquisitions remain unavailable; synthetic noise does not supply them.
+
+### 3.7 Frozen-model additive-noise stress test
+
+Additive white Gaussian noise is applied to the DC-centred 480 by 2000 RF region before envelope extraction, at ROI RMS SNR values of 20, 15, 10, 5 and 0 dB. For centred signal x and noise n, `SNR_dB = 20 log10(RMS(x)/RMS(n))`. Each noise field has its per-A-scan mean removed and is scaled to the requested SNR. Replicate seeds are 101, 102 and 103. Identical raw-image hashes receive identical noise within a replicate, so copied backgrounds do not become artificially independent observations. The same base Gaussian field is scaled across SNR conditions, yielding paired perturbations. SNR is relative to the complete centred ROI, not the unknown flaw-only response.
+
+The six original DSP detectors and 18 source-holdout CNN checkpoints are reused with their original normalisation and decisions. No retraining or threshold adjustment occurs. The SVM is not included in this stress test. GPU Hilbert/map outputs are checked against the clean CPU representation with absolute tolerance 2e-6 before noise evaluation. The 360 saved rows cover six folds, five SNR values, three noise draws and four method/seed combinations. Macro metrics average the six sources; plotted standard deviations describe three DSP noise draws or nine CNN noise/initialisation combinations, not independent-acquisition confidence intervals. Gaussian injection does not model coupling changes, coherent weld clutter or instrument drift.
+
+### 3.8 Simulation-trained experimental-target transfer
+
+Ten local NDT_ML_Flaw simulated batches, 201-210, decode as 10,000 images with 5,018 positive and 4,982 negative rows. Batches 201-207 train the models, batch 208 selects configurations/checkpoints and batches 209-210 form a 2,000-row simulated reference test. All 7,000 experimental rows are the target, with no experimental-target fitting, validation or threshold selection. Simulation size codes are not mapped to millimetres because their physical encoding remains unverified. The same DSP candidates, 25-configuration SVM grid and single CNN configuration with all three seeds are fitted in a new results directory. All selections are frozen before reference-test and target evaluation. Original experimental models are preserved.
+
+The pre-fit hash audit discovers exactly one identical image across the two domains: all 4,982 simulated negatives and all 3,558 experimental negatives share it. No positive raw hash overlaps. This discovery is disclosed before model fitting. The study therefore tests synthetic-positive to experimental-positive transfer on a shared normal background, not a fully independent simulated-to-real inspection domain. Experimental target specificity is particularly optimistic. Source and target positives may still be related through the upstream augmentation process; distinct hashes do not establish independent physical acquisitions.
+
+### 3.9 Measured FMC/TFM feasibility and independent backwall calibration
+
+The separately sourced Strathclyde dataset [7] contains a measured welded 316L stainless-steel inspection, nominally a 6 mm lack-of-fusion flaw at 50 degrees. Acquisition metadata specify 128 elements at 0.7 mm pitch, 5 MHz nominal centre frequency, 100 MHz sampling, a 22 mm plate and longitudinal speed 5,820 m/s. The MATLAB variable FMC_new actually has dimensions 10,000 by 128 by 128 (time, transmitter, receiver), correcting the order stated in the accompanying metadata. The raw file SHA-256, licence and download locations are saved in the repository.
+
+After trace DC removal, a fourth-order 2-8 MHz Butterworth bandpass is applied with zero-phase filtering. Polyphase decimation by five gives a 20 MHz signal. Full-aperture TFM sums linearly interpolated analytic signals at each transmit-plus-receive propagation delay, using straight longitudinal rays and one homogeneous velocity. For grid point r, `I(r) = abs(sum_tx,rx a_tx,rx((|r-r_tx|+|r-r_rx|)/c - t0))`. The imaging grid spans x=0-90 mm and depth=1-26 mm at 0.25 mm spacing. A synthetic point-target test checks delay geometry and interpolation, but cannot validate the weld propagation approximation.
+
+An initial reconstruction uses t0=0. Its backwall position motivates a separately saved calibrated variant. For diagonal pulse-echo traces from remote elements (x less than 20 mm or greater than 70 mm), the envelope peak is found in a predefined 4.5-10.5 microsecond window. The offset is expected backwall arrival 2h/c minus median observed arrival, giving t0=1.21014 microseconds. The nominal crack-tip position is not used to fit this calibration. Both reconstructions are retained.
+
+For a bounded localisation check, the brightest amplitude is extracted from the metadata-assisted lower-tip ROI x=29-41 mm, depth=17-21.5 mm and compared with the approximate metadata point (35,20) mm. This is not blind localisation, and nominal-point distance is not metrologically established sizing error. The one-velocity model, approximate geometry, ROI selection and boundary peaks constrain interpretation. This pilot answers whether the imaging code executes on measured FMC data; it does not extend the CNN detector into a validated localiser.
 
 ## 4 Results
 
@@ -184,6 +210,50 @@ Selected epochs range from 3 to 20. Recorded training time totals 2.66 minutes a
 
 ![Figure 5 Validation balanced accuracy over epochs for each source-holdout fold and all three seeds. Curves concern validation only; checkpoint selection does not use test results.](../results/dsp_cnn/validation_curves.png)
 
+### 4.5 Controlled additive-noise sensitivity
+
+| Added SNR dB | DSP recall % | DSP BA % | CNN recall % | CNN BA % | CNN specificity % |
+|---|---|---|---|---|---|
+| 20 | 66.67 | 83.33 | 94.57 | 97.28 | 100.00 |
+| 15 | 66.67 | 83.33 | 96.14 | 98.07 | 100.00 |
+| 10 | 66.67 | 83.33 | 94.86 | 94.65 | 94.44 |
+| 5 | 66.67 | 83.33 | 94.31 | 94.38 | 94.44 |
+| 0 | 66.74 | 80.59 | 81.09 | 87.77 | 94.44 |
+
+Values average source-macro metrics over noise draws and, for CNN, all three model seeds. Clean macro recall/BA are 66.67/83.33% for DSP and 85.07/92.54% for CNN. DSP specificity is 100% at 5-20 dB and 94.44% at 0 dB. These are descriptive scores on perturbed existing data, including copied backgrounds.
+
+![Figure 6 Frozen-model Gaussian-noise stress test. Error bars are sample SD across noise and model seed combinations; dashed lines mark clean means.](../results/noise_robustness/noise_performance.png)
+
+The CNN response is nonmonotonic: mean recall rises above its clean value under moderate perturbation, then falls at 0 dB, while false positives appear at 0-10 dB. Added noise changes the envelope and score distribution, sometimes moving previously subthreshold positives across a frozen decision boundary. Increased recall alone is therefore not proof of better robustness. The specificity loss exposes the cost of that movement. Full fold-level results, logits and decisions are saved; no noisy test condition is used to choose a threshold.
+
+### 4.6 Simulation-trained transfer on a shared normal background
+
+| Evaluation domain | Method | Recall % | BA % | ROC-AUC |
+|---|---|---|---|---|
+| Simulated reference | DSP | 55.79 | 77.90 | 0.7761 |
+| Simulated reference | SVM | 89.48 | 94.74 | 0.9749 |
+| Simulated reference | CNN | 72.81 +/- 3.96 | 86.41 +/- 1.98 | 0.9778 |
+| Experimental target | DSP | 100.00 | 100.00 | 1.0000 |
+| Experimental target | SVM | 100.00 | 100.00 | 1.0000 |
+| Experimental target | CNN | 100.00 +/- 0.00 | 100.00 +/- 0.00 | 1.0000 |
+
+CNN values are seed means +/- sample SD; AUC is the seed mean. Metrics here pool rows within a domain, whereas the primary experiment uses an equal-weight source macro average. They are separate protocols and must not be merged into one model leaderboard.
+
+![Figure 7 Simulation-trained models on their untouched simulated test and experimental target. All target negatives also occur in the source domain.](../results/simulated_to_real/transfer_performance.png)
+
+All models classify every target positive and negative correctly. However, perfect target specificity is measured on an identical training-domain background, and target positives need not span the same amplitude/difficulty distribution as the simulated reference. The poorer simulated-reference scores show that a dataset labelled experimental is not automatically a harder independent test. The result demonstrates that these frozen simulation-trained decisions transfer to these target rows; it cannot establish deployment performance, a benefit over the original source-holdout models, or general transfer to unseen normal structures.
+
+### 4.7 Measured array imaging and nominal-tip discrepancy
+
+| Reconstruction | ROI peak x, depth mm | Distance to nominal tip mm |
+|---|---|---|
+| Initial t0=0 | 29.25, 18.50 | 5.94 |
+| Backwall-calibrated | 37.50, 17.00 | 3.91 |
+
+![Figure 8 Backwall-calibrated TFM from measured welded-plate FMC data. The cyan reference is approximate; the bright ROI peak is not a verified crack tip.](../results/fmc_tfm/calibrated_tfm.png)
+
+Backwall calibration reduces the nominal-point discrepancy, but the calibrated peak is on the upper boundary of the search ROI. That behaviour indicates an unreliable tip assignment, not successful accurate localisation. The 0.25 mm grid spacing is numerical sampling, not achieved physical resolution or measurement accuracy. Both images, calibration arrivals, reconstruction grids and error calculations are included. The imaging pilot is implemented and numerically checked, with a negative result for dependable crack-tip identification under this simplified model.
+
 ## 5 Discussion
 
 ### 5.1 Answering the research question
@@ -220,17 +290,25 @@ The repeated negative background is the strongest limitation. A model can recogn
 
 Distinct positive hashes do not eliminate augmentation dependence. Grouping by source label reduces direct source reuse across positive partitions, but cannot establish new-specimen independence. More original cracks and acquisition metadata would permit a stronger specimen-level evaluation. In particular, a binomial confidence interval treating every augmented row as independent would overstate precision and is not reported.
 
-The map representation trades resolution for tractability. Narrow echoes can be retained by maximum pooling while subtle spatial texture is lost; global pooling also removes explicit location. Neither depth nor scan-axis localisation is evaluated. The work therefore supports a bounded binary-detection conclusion, not the full localisation ambitions in the original proposal. Controlled noise robustness, independent-background evaluation and a preplanned representation ablation are the most informative next tests.
+The map representation trades resolution for tractability. Narrow echoes can be retained by maximum pooling while subtle spatial texture is lost; global pooling also removes explicit location. Neither depth nor scan-axis localisation is inferred by the CNN. The separate measured-FMC pilot implements imaging but does not achieve reliable tip identification. The noise study is a controlled synthetic perturbation rather than a substitute for new acquisitions. Independent-background evaluation and a preplanned representation ablation remain necessary to broaden the binary-detection conclusion.
+
+### 5.6 What the supplementary tests add
+
+The noise study reinforces the operating-point diagnosis: input perturbation can increase recall and simultaneously introduce false alarms, so a monotonic degradation assumption would be misleading. Synthetic Gaussian noise is useful because its strength is controlled, but limited because real inspection changes are structured and may alter signal propagation. Paired noise fields and duplicate-aware assignment avoid presenting copied negatives as new independent acquisitions.
+
+The transfer audit is as consequential as its perfect target scores. A background shared between simulation and experiment weakens the claim of a domain shift precisely where false-positive reliability matters. No target positive image is byte-identical to a simulated positive, but this rules out only exact identity. It does not establish unrelated physical sources. The appropriate conclusion is narrow positive-response transfer under a shared-background condition, with independent normal acquisitions still required.
+
+The imaging pilot exposes a separate physics limit: delay-and-sum code can pass a point-target test and produce a plausible measured image while failing to identify the intended crack tip. Backwall calibration removes one global timing discrepancy; it cannot correct spatially varying weld velocities or distinguish tip diffraction from other bright responses. A boundary maximum and approximate reference point prohibit an accuracy claim. A subsequent validated study would need independent geometric truth and an appropriate propagation model. These observations support the report's emphasis on evaluation conditions rather than headline scores.
 
 ## 6 Conclusion
 
 For this dataset and the frozen source-holdout protocol, adding the compact CNN improves macro recall over the deterministic detector by 18.40 percentage points, chiefly by recovering the 3 mm source. It does not outperform the saved engineered-feature SVM, and its mean 2 mm recall remains only 10.42%. Figure 4 establishes that ranking and the fixed operating boundary transfer differently even within the CNN pipeline.
 
-The contribution is the controlled comparison and its diagnosis, not a superior CNN architecture. Source-wise reporting and image-identity auditing reveal weaknesses hidden by perfect ordinary-split accuracy. The question is answered for these six source labels and actual development budgets; independent-background specificity and new-specimen generalisation remain unestablished. The next defensible experiment needs new acquisitions, comparable model-selection budgets and predefined threshold handling, rather than further tuning against these test results.
+The contribution is the controlled comparison and its diagnosis, not a superior CNN architecture. Source-wise reporting and image-identity auditing reveal weaknesses hidden by perfect ordinary-split accuracy. The question is answered for these six source labels and actual development budgets; independent-background specificity and new-specimen generalisation remain unestablished. The completed supplementary studies demonstrate nonmonotonic frozen-threshold noise sensitivity, perfect but shared-background simulation-trained transfer, and an implemented measured-FMC reconstruction with unreliable tip identification. Broader conclusions require new acquisitions, comparable model-selection budgets and predefined threshold handling rather than further tuning against these test results.
 
 ## 7 Reproducibility and references
 
-The repository includes working inference code, fixed demonstration inputs, all selected weights, split manifests, per-sample predictions, training curves and numerical verification. Run `python src/demo_cnn.py` for the portable demonstration and `python src/verify_cnn_results.py` to check the saved experiment without fitting a model. `requirements-cnn.txt` records the final-stage environment. Raw data and the large local cache are excluded; the original upstream dataset is linked in the README. Full training instructions and the fixed protocol are documented separately. The report and video are linked from the repository.
+The repository includes working inference code, fixed demonstration inputs, all selected weights, split manifests, per-sample predictions, training curves and numerical verification. Run `python src/demo_cnn.py` for the portable demonstration and `python src/verify_cnn_results.py` to check the saved experiment without fitting a model. `requirements-cnn.txt` records the final-stage environment. Raw data and the large local cache are excluded; the original upstream dataset is linked in the README. Full training instructions and the fixed protocol are documented separately. The report and video are linked from the repository. Supplementary working code and raw-data reproduction instructions are in docs/methodology/completed_extensions.md. Run `python src/verify_extensions.py` to check all saved extension results without raw data or model fitting. Raw FMC and simulated streams are excluded. Public dataset provenance and the CC BY 4.0 attribution are retained.
 
 AI assistance: OpenAI Codex assisted with implementation, experiment orchestration, verification and report preparation. The cited publications and upstream dataset are credited below; the author retains responsibility for the submitted analysis.
 
@@ -248,3 +326,8 @@ AI assistance: OpenAI Codex assisted with implementation, experiment orchestrati
 [5] H. Herve-Cote, F. Dupont-Marillia and P. Belanger, "Automatic flaw detection in sectoral scans using machine learning," Ultrasonics, vol. 141, art. 107316, 2024. https://doi.org/10.1016/j.ultras.2024.107316
 
 [6] S. McKnight, V. Tunukovic, A. Hifi, S. G. Pierce, E. Mohseni, C. N. MacLeod and T. O'Hare, "Three-dimensional ultrasonic self supervised segmentation," Engineering Applications of Artificial Intelligence, vol. 154, art. 110870, 2025. https://doi.org/10.1016/j.engappai.2025.110870
+
+
+[7] T. Lardner (creator) and K. M. M. Tant (contributor), "FMC dataset," University of Strathclyde, 2015, dataset and acquisition metadata, CC BY 4.0. https://doi.org/10.15129/a7da5071-0436-4913-8f0e-de78f5ebccd6
+
+[8] C. Holmes, B. W. Drinkwater and P. D. Wilcox, "Post-processing of the full matrix of ultrasonic transmit-receive array data for non-destructive evaluation," NDT & E International, vol. 38, no. 8, pp. 701-711, 2005. https://doi.org/10.1016/j.ndteint.2005.04.002

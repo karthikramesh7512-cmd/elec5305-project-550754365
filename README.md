@@ -2,7 +2,7 @@
 
 **ELEC5305 Final Project | Karthik Ramesh | SID 550754365**
 
-[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) Â· [Demonstration video (MP4, 2 min 41 s)](docs/video/project_demo.mp4) Â· [Report text](docs/final_report.md) Â· [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
+[Final research report (PDF)](docs/ELEC5305_Final_Report.pdf) | [Demonstration video (MP4)](docs/video/project_demo.mp4) | [Report text](docs/final_report.md) | [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
 
 ## Final experiment: DSP versus DSP + CNN
 
@@ -10,13 +10,17 @@
 
 The frozen six-source evaluation gives macro recall of **66.67% for DSP**, **85.07% for DSP + CNN** (three-seed SD 1.02 percentage points), and **99.79% for the saved SVM**. The CNN detects the 3 mm source but has only **10.42% mean recall for the 2 mm source**. It improves on the frozen DSP operating point, but **does not outperform the SVM**. CNN ROC-AUC is 1.0 in all evaluated folds, exposing ranking versus operating-threshold transfer. No test-driven retuning was performed.
 
-All 3,558 negative rows repeat one raw background. Specificity therefore does not demonstrate generalisation to independent no-flaw acquisitions. All 105 protected original data/result files remain unchanged.
+All 3,558 negative rows repeat one raw background. Specificity therefore does not demonstrate generalisation to independent no-flaw acquisitions.
 
 ![DSP SVM and CNN held-out recall](results/dsp_cnn/comparison_recall.png)
 
-[CNN score-transfer diagnostic](docs/methodology/cnn_score_transfer.png) · [Architecture diagram](docs/methodology/cnn_pipeline_final.png)
+[CNN score-transfer diagnostic](docs/methodology/cnn_score_transfer.png) | [Architecture diagram](docs/methodology/cnn_pipeline_final.png)
 
-[Full results](results/dsp_cnn/results_summary.md) Â· [All 21 seed/evaluation rows](results/dsp_cnn/cnn_summary.csv) Â· [Fixed CNN protocol](docs/methodology/final_cnn_protocol.md)
+[Full results](results/dsp_cnn/results_summary.md) | [All 21 seed/evaluation rows](results/dsp_cnn/cnn_summary.csv) | [Fixed CNN protocol](docs/methodology/final_cnn_protocol.md)
+
+### Completed supplementary studies
+
+Noise stress testing, simulation-trained transfer and a measured-FMC imaging pilot are complete. [Protocols, caveats and reproduction commands](docs/methodology/completed_extensions.md) | [Noise results](results/noise_robustness/) | [Transfer results](results/simulated_to_real/) | [TFM results](results/fmc_tfm/). Run `python src/verify_extensions.py` for the independent saved-result checks. The transfer domains share one identical no-flaw background; the TFM peak does not reliably locate the nominal tip.
 
 ### Run the saved-model demonstration
 
@@ -38,23 +42,23 @@ python src/dsp_cnn.py --dataset-dir "PATH/TO/datasets"
 
 The training script validates raw-image hashes, builds an ignored local cache, trains all checkpoints before any test evaluation, and refuses to overwrite a completed CNN experiment. The recorded GPU environment used torch 2.9.0+cu126; obtain the appropriate wheel from the official PyTorch index if using CUDA. Exact CPU/GPU numerical reproducibility across platforms is not assumed.
 
-The final report now includes a critical 2021-2025 literature comparison, explicit DSP/CNN equations and architecture dimensions, design rationale, and a saved-logit diagnostic. It also distinguishes the SVM's 25-configuration search from the CNN's single fixed configuration; these results rank the implemented pipelines rather than the model families in general.
+The SVM uses a validation search over 25 configurations. The CNN uses one fixed configuration and three training seeds. The comparison evaluates these implemented pipelines under their respective development budgets.
 
-### Final additions
+### Implementation and outputs
 
 - `src/dsp_cnn.py`, `src/demo_cnn.py`, `src/verify_cnn_results.py`
 - `tests/test_dsp_cnn.py`, `requirements-cnn.txt`
 - `data/cnn_demo_samples.npz`, `results/dsp_cnn/` (weights, histories, selection IDs, predictions and figures)
 - `docs/ELEC5305_Final_Report.pdf`, `docs/final_report.md`, `docs/video/project_demo.mp4`
 
-The sections below retain the first-stage DSP/SVM methodology and evidence. Historical reports under `results/dsp_baseline/` and `results/svm/` describe that stage; statements there that no CNN was implemented predate this extension.
+The following sections document the DSP/SVM baseline experiments. The CNN comparison and supplementary studies have separate protocols and result directories.
 
 ## 1. Project overview
 
-This repository packages the completed first-half ELEC5305 experiment: dataset
+The baseline study comprises: dataset
 auditing, fixed evaluation manifests, a deterministic DSP detector and an
 engineered-feature SVM. It compares generalisation to held-out experimental flaw
-sources. Saved scientific results and model outputs are preserved.
+sources.
 
 ## 2. Research question
 
@@ -63,14 +67,14 @@ generalise to previously unseen ultrasonic flaw sources?
 
 ## 3. Dataset
 
-The first-half experiment uses NDT_ML_Flaw experimental batches **013â€“019**:
+The primary source-holdout experiment uses NDT_ML_Flaw experimental batches **013-019**:
 **7,000 samples**, comprising **3,442 flaw** and **3,558 no-flaw** rows.
 The six experimental source flaws are P41_01, P41_02, P41_03, P41_04,
-P41_05 and P41_06_notch. Images are decoded as 480 Ã— 7168 little-endian
+P41_05 and P41_06_notch. Images are decoded as 480 x 7168 little-endian
 int16 arrays; decoding evidence is in the inspection report.
 
 Raw dataset files are excluded. `data/metadata.csv` includes both experimental
-and simulated metadata; batches 201â€“210 are not part of the current experiment.
+and simulated metadata; batches 201-210 are used only by the separate simulation-trained transfer extension.
 Derived features, audits and split manifests are included. Obtain the original dataset from [NDT_ML_Flaw](https://github.com/koomas/NDT_ML_Flaw); raw images are not included in this repository.
 
 ## 4. Dataset audit
@@ -163,7 +167,7 @@ Full-precision evidence: [DSP summary](results/dsp_baseline/dsp_summary.csv),
 
 ![DSP scores and validation-derived thresholds](docs/methodology/figure_dsp_score_thresholds.png)
 
-[Score/threshold SVG](docs/methodology/figure_dsp_score_thresholds.svg) Â· [Full-precision figure data](docs/methodology/results_table_submission2.csv)
+[Score/threshold SVG](docs/methodology/figure_dsp_score_thresholds.svg) | [Full-precision figure data](docs/methodology/results_table_submission2.csv)
 
 These figures use saved CSV outputs only. They do not involve new model fits or experiments.
 
@@ -189,6 +193,10 @@ results/
   data_inspection/          Inspection CSVs, figures and report
   dsp_baseline/             DSP metrics, predictions, diagnostics and figures
   svm/                      SVM metrics, figures, provenance and saved pipelines
+  dsp_cnn/                  Primary CNN checkpoints, predictions and figures
+  noise_robustness/         Frozen-model Gaussian-noise stress tests
+  simulated_to_real/        Simulation-trained transfer and shared-background audit
+  fmc_tfm/                  Measured initial and calibrated TFM reconstructions
 proposal/                   Original project proposal PDF
 docs/methodology/           Methodology/results figures, evidence and preservation hashes
 requirements.txt            Direct Python dependencies, pinned to local versions
@@ -196,8 +204,8 @@ requirements.txt            Direct Python dependencies, pinned to local versions
 README.md
 ```
 
-See [full packaged tree](docs/methodology/repository_tree.txt) and
-[packaging notes](docs/methodology/README.md).
+See [repository file index](docs/methodology/repository_tree.txt) and
+[methods and reproducibility records](docs/methodology/README.md).
 
 ## 11. Reproduction instructions
 
@@ -223,7 +231,7 @@ To regenerate the experiment, obtain the original NDT_ML_Flaw dataset separately
 Place one dataset copy under `NDT_ML_Flaw-master/` with its `datasets/batch_*.txt`
 and `.xz` files. Automatic discovery requires a single matching dataset folder.
 Run the following in a separate working copy because they overwrite derived
-artifacts; packaging itself did not rerun these computations:
+artifacts:
 
 ```powershell
 python src/audit_dataset.py
@@ -239,15 +247,22 @@ python src/finalize_svm_report.py
 ```
 
 The metadata audit accepts `--dataset-dir` explicitly. Other raw-data stages
-discover files under the repository. Included historical reports retain their
-original command spellings; use the relocated paths above.
+discover files under the repository. Use the commands above for the current repository paths.
 
-## 12. Future work
+## 12. Completed extensions and remaining scientific limits
 
-The compact DSP-envelope CNN comparison is complete. Remaining extensions are controlled noise robustness experiments,
-simulated-to-real evaluation, and FMC/TFM localisation. These experiments have
-**not** been completed in the current first-half project. Future evaluation also
-needs genuinely diverse no-flaw acquisitions.
+The controlled-noise test, simulation-trained transfer experiment and measured-FMC/TFM pilot are now implemented and reported. [Methods, results and reproduction commands](docs/methodology/completed_extensions.md).
+
+- **Noise:** five added Gaussian SNRs and three perturbation seeds; frozen DSP/CNN models. Higher recall can coincide with false alarms; no threshold retuning.
+- **Transfer:** simulation-only fitting, followed by untouched simulated and experimental evaluation. All methods score 100% on the experimental target, **but both domains share the same no-flaw image**. This is not independent-background validation.
+- **FMC/TFM:** measured public welded-plate data; initial and backwall-calibrated reconstructions. The nominal-tip discrepancy drops from 5.94 to 3.91 mm, but the peak lies on the ROI boundary, so reliable tip localisation is not established.
+- **External validation:** independently acquired diverse normal specimens remain unavailable. Noise injection does not create them. This scientific limitation is stated in the report.
+
+![Noise stress test](results/noise_robustness/noise_performance.png)
+![Simulation-trained transfer with shared normal background](results/simulated_to_real/transfer_performance.png)
+![Measured FMC reconstruction](results/fmc_tfm/calibrated_tfm.png)
+
+Verify the saved extensions without raw data or training: `python src/verify_extensions.py`.
 
 ## 13. References
 

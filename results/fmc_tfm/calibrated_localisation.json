@@ -1,0 +1,30 @@
+{
+  "calibration": {
+    "method": "Median diagonal-pulse backwall arrival on remote aperture elements",
+    "plate_thickness_mm": 22,
+    "sound_speed_m_s": 5820,
+    "remote_elements_x_mm": "x < 20 or x > 70",
+    "observed_arrival_window_us": [
+      4.5,
+      10.5
+    ],
+    "nominal_tip_used_in_calibration": false,
+    "explanation": "Geometry-based time-origin calibration using a planar backwall; fixed before calibrated tip evaluation."
+  },
+  "time_zero_seconds": 1.2101374570446728e-06,
+  "nominal_lower_tip_x_z_mm": [
+    35,
+    20
+  ],
+  "estimate_x_z_mm": [
+    37.5,
+    17.0
+  ],
+  "euclidean_error_mm": 3.905124837953327,
+  "absolute_x_error_mm": 2.5,
+  "absolute_depth_error_mm": 3.0,
+  "data_sha256": "90c01b23a687b539e70e0b849b726f2dd12c2ecbd788bc274d8101f901102533",
+  "code_sha256": "3de0c09f58fa6d1447b66aec4d2e83e43d95ad1930c0bb65d73153862dafeed6",
+  "baseline_files_unchanged": 105,
+  "caveat": "Metadata-assisted brightest peak in predeclared lower-tip ROI; nominal position approximate. No calibration by crack-tip error and no blind localisation or crack-size claim."
+}

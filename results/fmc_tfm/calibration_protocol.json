@@ -1,0 +1,12 @@
+{
+  "method": "Median diagonal-pulse backwall arrival on remote aperture elements",
+  "plate_thickness_mm": 22,
+  "sound_speed_m_s": 5820,
+  "remote_elements_x_mm": "x < 20 or x > 70",
+  "observed_arrival_window_us": [
+    4.5,
+    10.5
+  ],
+  "nominal_tip_used_in_calibration": false,
+  "explanation": "Geometry-based time-origin calibration using a planar backwall; fixed before calibrated tip evaluation."
+}

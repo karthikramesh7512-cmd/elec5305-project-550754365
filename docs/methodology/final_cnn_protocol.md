@@ -2,7 +2,7 @@
 
 ## Scope
 
-This extension adds a compact CNN classifier downstream of the shared DSP front end. It does not change or rerun the saved deterministic detector or engineered-feature SVM. The question is whether a learned convolutional decision rule improves detection of previously unseen flaw sources relative to the frozen validation-thresholded DSP detector. Improvement over the existing SVM is a separate comparison; improvement is not assumed.
+The comparison evaluates a compact CNN classifier downstream of the shared DSP front end against the fixed deterministic detector and engineered-feature SVM. The question is whether a learned convolutional decision rule improves detection of previously unseen flaw sources relative to the frozen validation-thresholded DSP detector. Improvement over the existing SVM is a separate comparison; improvement is not assumed.
 
 ## Fixed protocol
 
@@ -14,12 +14,12 @@ This extension adds a compact CNN classifier downstream of the shared DSP front 
 - Architecture: three padded 3 by 3 convolution layers with 8, 16 and 32 channels and ReLU activations; 2 by 2 max pooling after the first two layers; concatenated global average and maximum pooling; one linear output logit. No pretrained weights or metadata input.
 - Training: Adam, learning rate 0.001, weight decay 0.0001, unweighted binary cross entropy with logits, batch size 64, at most 20 epochs. No augmentation or hyperparameter search. Fixed seeds 42, 43 and 44 measure initialization/training variation.
 - Checkpoint selection: highest validation balanced accuracy, then lowest validation binary cross entropy; earliest checkpoint on an exact tie. Stop after five consecutive epochs without improvement in that ordering. Classification threshold remains fixed at sigmoid probability 0.5.
-- Freeze all 21 selected checkpoints before evaluating any test set. No train-plus-validation refit and no test-based tuning or architecture revisions.
-- Report every seed and fold, mean and sample standard deviation across seeds, confusion counts, recall, specificity, precision, F1, balanced accuracy and ROC-AUC. Compare against the exact saved baseline rows for the same scheme and fold.
-- Save training curves, fit/validation IDs, selected epochs, weights, preprocessing configuration and provenance. Exclude the local envelope-map cache from GitHub.
+- All 21 selected checkpoints are frozen before any test evaluation. No train-plus-validation refit and no test-based tuning or architecture revisions.
+- Reporting includes every seed and fold, mean and sample standard deviation across seeds, confusion counts, recall, specificity, precision, F1, balanced accuracy and ROC-AUC. Compare against the exact saved baseline rows for the same scheme and fold.
+- Saved artifacts include training curves, fit/validation IDs, selected epochs, weights, preprocessing configuration and provenance. The large envelope-map cache is excluded from version control.
 
 ## Interpretation limits
 
 All 3,558 no-flaw rows repeat one raw background. Negative rows are not independent acquisitions, and specificity cannot demonstrate performance on unseen no-flaw backgrounds. Related augmented positives also limit independence. Source holdout tests exclusion of P41 source labels, not new specimens or acquisition systems. Seed variability is not a confidence interval for independent physical flaws. Full-resolution processing and robustness to acquisition noise are not established by this experiment.
 
-No CNN result may be described as an improvement until the fixed evaluation has completed. Report ties or deterioration explicitly. Original model outputs and all 105 protected data/results files remain byte-for-byte preserved.
+Performance comparisons use the complete fixed evaluation, including ties and deterioration. The integrity checks validate the original baseline model outputs, data files and evaluation manifests.

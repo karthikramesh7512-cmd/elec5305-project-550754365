@@ -1,31 +1,28 @@
-# Methodology and packaging record
+# Methods and reproducibility
 
-The current scientific narrative is in the root README. Original evidence remains
-at its original data/results paths to preserve provenance hashes:
+The following records document the datasets, evaluation design and baseline methods:
 
-- [Source audit](../../data/source_flaw_audit_notes.md)
-- [Split definitions](../../data/splits/README.md)
+- [Source and image-identity audit](../../data/source_flaw_audit_notes.md)
+- [Frozen evaluation splits](../../data/splits/README.md)
 - [Data inspection](../../results/data_inspection/inspection_report.md)
-- [DSP procedure](../../results/dsp_baseline/README.md)
+- [DSP method](../../results/dsp_baseline/README.md)
 - [DSP results](../../results/dsp_baseline/RESULTS.md)
 - [DSP diagnostics](../../results/dsp_baseline/dsp_diagnostics.md)
-- [SVM results and feature definitions](../../results/svm/svm_report.md)
+- [SVM methods, features and results](../../results/svm/svm_report.md)
 
-These historical reports are preserved verbatim. Their root-level Python commands
-predate packaging: use `python src/<script>.py`, or `python tests/verify_dsp_results.py`
-with `src` on PYTHONPATH, as described in the root README. Earlier DSP reports only
-observed identical negative scores; the later raw-image hash audit established
-that all 3,558 experimental negative rows contain exactly the same image.
+Run repository commands from the project root using the paths in the main README.
+All 3,558 experimental no-flaw rows repeat one raw background. Specificity therefore does not establish performance on independent normal acquisitions.
 
-Packaging changed source root resolution from `.parent` to `.parents[1]`, updated
-source-file provenance paths, and normalised historical Windows path separators
-when tests read provenance keys. The historical DSP source hash is checked after
-undoing only its root-resolution change. Nine unit/provenance tests and the
-independent DSP saved-result verifier passed after relocation.
-No scientific computations, splits, model outputs, or data/results files changed.
-The excluded IDE launcher was redirected to `src/audit_dataset.py`.
-`packaging_preservation.json` records SHA-256 hashes of every original data/results
-file and the relocated implementation files. Saved SVM models are included because
-the existing provenance tests check their training-only fits and predictions.
+## Reproducibility records
 
+[Integrity records](packaging_preservation.json) contain source and result hashes. The saved models, numerical tables and fixed split manifests support independent verification.
 
+## CNN and supplementary studies
+
+- [Fixed CNN protocol](final_cnn_protocol.md)
+- [CNN evaluation outputs](../../results/dsp_cnn/)
+- [Noise, simulation-transfer and measured-FMC methods](completed_extensions.md)
+- [Research report](../ELEC5305_Final_Report.pdf)
+- [Project demonstration](../video/project_demo.mp4)
+
+[Pre-extension result hashes](pre_extension_preservation.json) support the saved-result verification script. The supplementary outputs occupy separate result directories.

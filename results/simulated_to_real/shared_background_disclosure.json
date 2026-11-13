@@ -1,0 +1,12 @@
+{
+  "shared_hashes": [
+    "2fc5a1dd58b581fa3e383427e0bde5cc70885b249101be77f8994acb25c7ae4a"
+  ],
+  "source_shared_rows": 4982,
+  "target_shared_rows": 3558,
+  "known_before_model_fitting": true,
+  "positive_source_target_overlap": 0,
+  "interpretation": "Shared-negative-background transfer. Target specificity is not independent-domain evidence; positive-source transfer is the meaningful part.",
+  "preprocessing_maps_sha256": "570a7b8b19f5b54e1e19d91877052152e00bdac1d161c1cb6040aefd9ee55b9a",
+  "preprocessing_features_sha256": "b87e3a939132ed0efb0f23cdc9f8efcbd11067f04a2a14555f7b61dbca5c1b3b"
+}

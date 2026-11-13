@@ -1,0 +1,61 @@
+{
+  "config": {
+    "sound_speed_m_s": 5820,
+    "sample_rate_hz": 100000000,
+    "elements": 128,
+    "pitch_mm": 0.7,
+    "bandpass_mhz": [
+      2,
+      8
+    ],
+    "decimation": 5,
+    "grid_step_mm": 0.25,
+    "x_extent_mm": [
+      0,
+      90
+    ],
+    "z_extent_mm": [
+      1,
+      26
+    ],
+    "nominal_lower_tip_mm": [
+      35,
+      20
+    ],
+    "localization_search_mm": {
+      "x": [
+        29,
+        41
+      ],
+      "z": [
+        17,
+        21.5
+      ]
+    },
+    "time_zero_seconds": 0,
+    "model": "homogeneous longitudinal straight ray; full aperture; linear time interpolation",
+    "interpretation": "Metadata-assisted lower-tip ROI, not blind localisation. Nominal tip is approximate; weld anisotropy and time-zero uncertainty remain."
+  },
+  "raw_sha256": "90c01b23a687b539e70e0b849b726f2dd12c2ecbd788bc274d8101f901102533",
+  "mat_variable": "FMC_new",
+  "actual_mat_shape": [
+    10000,
+    128,
+    128
+  ],
+  "estimate_x_z_mm": [
+    29.25,
+    18.5
+  ],
+  "nominal_x_z_mm": [
+    35.0,
+    20.0
+  ],
+  "euclidean_error_mm": 5.942432162002357,
+  "absolute_x_error_mm": 5.75,
+  "absolute_depth_error_mm": 1.5,
+  "caveat": "ROI-assisted brightest indication, approximate metadata point, homogeneous weld approximation; not blind localisation or independent sizing.",
+  "dataset_doi": "10.15129/a7da5071-0436-4913-8f0e-de78f5ebccd6",
+  "licence": "CC BY 4.0",
+  "baseline_files_unchanged": 105
+}

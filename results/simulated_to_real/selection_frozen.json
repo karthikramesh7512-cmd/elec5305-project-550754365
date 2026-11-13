@@ -1,0 +1,78 @@
+{
+  "config": {
+    "noise_snr_db": [
+      20,
+      15,
+      10,
+      5,
+      0
+    ],
+    "noise_replicates": [
+      101,
+      102,
+      103
+    ],
+    "noise_definition": "AWGN added to DC-centred ROI; noise DC removed per A-scan and scaled to exact ROI RMS SNR. Repeated raw hashes share the same realization. Frozen models and thresholds; no retraining.",
+    "transfer_train_batches": [
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207
+    ],
+    "transfer_validation_batches": [
+      208
+    ],
+    "transfer_test_batches": [
+      209,
+      210
+    ],
+    "transfer_target": "All 7000 experimental rows, no target training or validation; encoded simulated sizes not mapped to millimetres.",
+    "tfm": {
+      "sound_speed_m_s": 5820,
+      "sample_rate_hz": 100000000,
+      "elements": 128,
+      "pitch_mm": 0.7,
+      "bandpass_mhz": [
+        2,
+        8
+      ],
+      "decimation": 5,
+      "grid_step_mm": 0.25,
+      "x_extent_mm": [
+        0,
+        90
+      ],
+      "z_extent_mm": [
+        1,
+        26
+      ],
+      "nominal_lower_tip_mm": [
+        35,
+        20
+      ],
+      "localization_search_mm": {
+        "x": [
+          29,
+          41
+        ],
+        "z": [
+          17,
+          21.5
+        ]
+      },
+      "time_zero_seconds": 0,
+      "model": "homogeneous longitudinal straight ray; full aperture; linear time interpolation",
+      "interpretation": "Metadata-assisted lower-tip ROI, not blind localisation. Nominal tip is approximate; weld anisotropy and time-zero uncertainty remain."
+    }
+  },
+  "cnn_checkpoints": {
+    "simulated_seed_42.pt": "1c90fbb017ef6217c6499248c75bb2c76b23dcb2eac75c5f85f5e0ab010e1714",
+    "simulated_seed_43.pt": "b3e4010fd8cdd6c7f8b288e7abfc6d585cc2b138d8e883c265919a34dcbc9dbb",
+    "simulated_seed_44.pt": "13af0c4bc9a1c13628bcb78c46dcf0f73a034ecd61c39549409a31a5cef3b6cc"
+  },
+  "svm_sha256": "cf2603c2ddffa40bde0b694289d5c25bfe1e5d3f0790994aa110ccd62c3bdb46",
+  "source_code_sha256": "06b935d0562fbba8015d8b753b23b2b928a39ce23ced845f5131b5bce2da71a0"
+}
