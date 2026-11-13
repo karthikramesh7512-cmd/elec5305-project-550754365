@@ -47,6 +47,7 @@ docs/methodology/packaging_preservation.json
 docs/methodology/pre_extension_preservation.json
 docs/methodology/repository_tree.txt
 docs/methodology/results_table_submission2.csv
+docs/video/Presentation1.pptx
 docs/video/project_demo.mp4
 proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf
 requirements-cnn.txt

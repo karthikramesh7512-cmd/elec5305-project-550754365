@@ -18,3 +18,4 @@ demo_output/
 docs/demo/
 *.code-workspace
 src/demo_live.py
+docs/latex/conversion_audit.json

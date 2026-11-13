@@ -2,7 +2,7 @@
 
 **ELEC5305 Final Project | Karthik Ramesh | SID 550754365**
 
-[Final research report (PDF, LaTeX)](docs/ELEC5305_Final_Report.pdf) | [LaTeX source (ZIP)](docs/ELEC5305_LaTeX_Source.zip) | [Demonstration video (MP4)](docs/video/project_demo.mp4) | [Report text](docs/final_report.md) | [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
+[Final research report (PDF, LaTeX)](docs/ELEC5305_Final_Report.pdf) | [LaTeX source (ZIP)](docs/ELEC5305_LaTeX_Source.zip) | [Demonstration video (MP4, 6 min 36 s)](docs/video/project_demo.mp4) | [Recording in PowerPoint](docs/video/Presentation1.pptx) | [Report text](docs/final_report.md) | [Original proposal](proposal/ELEC5305_Project_Proposal_Ultrasonic_Crack_Detection.pdf)
 
 ## Final experiment: DSP versus DSP + CNN
 
